@@ -6,7 +6,7 @@ package trabalhopoo;
 
 /**
  *
- * @author CAUPT - ALUNOS
+ * @author Jussie
  */
 public class TrabalhoPOO {
 
