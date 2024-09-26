@@ -3,35 +3,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package trabalhopoo;
+
 import java.time.LocalDate;
 
 /**
  *
  * @author CAUPT - ALUNOS
  */
-public class Pessoa {
+public class Pagamento {
     int id;
-    String nome;
-    String telefone;
+    Pessoa pessoa;
+    Fornecedor fornecedor;
+    String descricao;
+    String valor;
+    String parcela;
+    LocalDate data;
     LocalDate dataCriacao;
     LocalDate dataModificacao;
-    LocalDate nascimento;
-    public static int totalPessoas;
+   
+     public static int totalPagamento;
     
-    public void criar( String nome, String telefone){
-        this.id = totalPessoas++;
-        this.nome = nome;
-       // this.nascimento = nasc;
-        this.telefone = telefone;
+    public void criar(int id, Pessoa pessoa,Fornecedor fornecedor, String descricao, String valor, String parcela){
+        this.id = id;
+        this.pessoa = pessoa;
+        this.descricao = descricao;
+        this.fornecedor = fornecedor;
+        this.valor = valor;
+        this.parcela = parcela;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = null;
         
     }
     public String ler(){
-        String dados = "\nPessoa "+this.id;
-        dados+= "\nNome: "+this.nome;
-        dados+= "\nData de nascimento: "+this.nascimento;
-        dados+= "\nTelefone: "+this.telefone;
+        String dados = "\nMural de Recados "+this.id;
+        dados+= "\nNome: "+this.pessoa.nome;
+        dados+= "\nDescricao: "+this.descricao;
+        
         return dados;
     }
     public void atualizar(){

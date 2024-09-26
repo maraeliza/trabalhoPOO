@@ -9,6 +9,7 @@ package trabalhopoo;
  * @author Jussie
  */
 public class Cerimonial {
+    private int id;
     String noiva;
     String noivo;
     String padrinhos;
@@ -17,8 +18,10 @@ public class Cerimonial {
     int nrPadrinhos;
     int nrMadrinhas;
     int qtdConvidados;
+    public static int totalCerimonial;
     
     public void criar(String noiva, String noivo, String padrinhos, String madrinhas, String local, int nrPadrinhos, int nrMadrinhas, int qtdConvidados){
+        this.id = totalCerimonial++;
         this.noiva = noiva;
         this.noivo = noivo;
         this.padrinhos = padrinhos;

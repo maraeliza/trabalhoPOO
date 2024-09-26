@@ -18,10 +18,10 @@ public class Usuario {
     LocalDate dataCriacao;
     LocalDate dataModificacao;
     
+    public static int totalUsuario;
     
-    
-    public void criar(int id, Pessoa pessoa, String login, String senha){
-        this.id = id;
+    public void criar(Pessoa pessoa, String login, String senha){
+        this.id = totalUsuario++;
         this.pessoa = pessoa;
         this.login = login;
         this.senha = senha;

@@ -3,42 +3,36 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package trabalhopoo;
+
 import java.time.LocalDate;
 
 /**
  *
  * @author CAUPT - ALUNOS
  */
-public class Fornecedor {
-    int id;
-    
-    String nome;
-    String cnpj;
-    String telefone;
-    double valorAPagar;
-    int parcelas;
-    String estado;
-    
+public class MuralRecados {
+     int id;
+    Pessoa pessoa;
+    String comentario;
     
     LocalDate dataCriacao;
     LocalDate dataModificacao;
+   
+    public static int totalMuralRecados;
     
-    public static int totalFornecedor;
-    
-    public void criar(int id, String nome, String cnpj){
+    public void criar(int id, Pessoa pessoa, String comentario){
         this.id = id;
-        this.nome = nome;
-        this.cnpj = cnpj;
-        
+        this.pessoa = pessoa;
+        this.comentario = comentario;
         this.dataCriacao = LocalDate.now();
-       
+        this.dataModificacao = null;
         
     }
     public String ler(){
-        String dados = "\nFornecedor "+this.id;
-        dados+= "\nNome: "+this.nome;
-        dados+= "\nCNPJ: "+this.cnpj;
-        dados+= "\nTelefone: "+this.telefone;
+        String dados = "\nMural de Recados "+this.id;
+        dados+= "\nNome: "+this.pessoa.nome;
+        dados+= "\nComentario: "+this.comentario;
+        
         return dados;
     }
     public void atualizar(){

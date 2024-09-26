@@ -15,6 +15,7 @@ public class Cartorio {
     String noivo;
     String noiva;
     //String local;
+     public static int totalCartorio;
     
     public void criar(String nomeJuiz, LocalDate dataRegistro, String noivo, String noiva){
         this.nomeJuiz = nomeJuiz;

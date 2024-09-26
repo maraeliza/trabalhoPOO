@@ -12,7 +12,7 @@ public class Igreja {
     String nomeIgreja;
     String ror; // Registro de Organização Religiosa
     
-    
+    public static int totalIgreja;
     
     public void criar(String nomeIgreja, String ror){
         this.nomeIgreja = nomeIgreja;
