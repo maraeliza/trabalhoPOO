@@ -86,7 +86,9 @@ public class Recado {
         String dados = "";
         dados = "\n\nID: " + this.id;
         dados += "\n Comentário: " + this.comentario;
-        dados += "\n Autor: " + this.pessoa.nome;
+        if(this.pessoa != null){
+            dados += "\n Autor: " + this.pessoa.nome;
+        }
         dados += "\n Data de criação: " + Util.dateToString(this.dataCriacao);
         
 

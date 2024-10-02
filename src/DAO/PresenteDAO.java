@@ -35,7 +35,7 @@ public class PresenteDAO {
     }
 
     public boolean setVetor() {
-        if (this.nItens == 0) {
+        if (nItens == 0) {
             this.vetor = new Presente[100];
             return true;
         } else {
@@ -64,17 +64,17 @@ public class PresenteDAO {
         return texto;
     }
 
-    public static void addPresente(String nome, String tipo){
+    public static void cadastrar(String nome, String tipo){
         System.out.println("ADICIONANDO PRESENTE");
         Presente presente = new Presente();
         presente.criar(nome, tipo);
-        if(PresenteDAO.add(presente) == true){
+        if(PresenteDAO.addVetor(presente) == true){
             System.out.println("PRESENTE ADICIONADO COM SUCESSO!");
         }else{
             System.out.println("NÃO FOI POSSíVEL ADICIONAR PRESENTE!");
         }      
     }
-    public static void upPresente(String idS, String nome, String tipo){
+    public static void atualizar(String idS, String nome, String tipo){
         int id = Util.stringToInt(idS);
         System.out.println("ENCONTRANDO PRESENTE....");
         if(nome.length() > 1 && tipo.length() > 0){
@@ -94,7 +94,7 @@ public class PresenteDAO {
         
            
     }
-    public static boolean  add(Presente p) {
+    public static boolean  addVetor(Presente p) {
         System.out.println("ADICIONANDO NO VETOR");
         for (int i = 0; i < vetor.length; i++) {
             System.out.println("Percorrendo vetor");
@@ -118,10 +118,7 @@ public class PresenteDAO {
         }
         return false;
     }
-    public static void cadastrar(String nome, String tipo){
-          
-        
-    }
+  
     public static boolean find(int id) {
         for (int i = 0; i < vetor.length; i++) {
             if (vetor[i] != null && vetor[i].id == id) {

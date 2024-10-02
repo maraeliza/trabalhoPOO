@@ -4,27 +4,27 @@
  */
 package DAO;
 
-import CLASSES.Recado;
+import CLASSES.Igreja;
 import GUI.Util;
 
 /**
  *
  * @author Mara
  */
-public class RecadoDAO {
-    private Class<Recado> classe;
+public class IgrejaDAO {
+    private Class<Igreja> classe;
     private int id;
-    private static Recado[] vetor;
+    private static Igreja[] vetor;
     private static int nItens;
     
    
-    public RecadoDAO(){
+    public IgrejaDAO(){
         
-        this.classe = Recado.class;
+        this.classe = Igreja.class;
         nItens = 0;
     }
-    public static Class<Recado> getClasse(){
-        return Recado.class;
+    public static Class<Igreja> getClasse(){
+        return Igreja.class;
     }
     public int setNItens() {
         return nItens;
@@ -36,19 +36,19 @@ public class RecadoDAO {
 
     public boolean setVetor() {
         if (this.nItens == 0) {
-            this.vetor = new Recado[100];
+            this.vetor = new Igreja[100];
             return true;
         } else {
             return false;
         }
     }
 
-    public Recado[] getVetor() {
+    public Igreja[] getVetor() {
         return this.vetor;
     }
     
     public static String getTexto(){
-        String texto = "RECADOS JÁ CADASTRADOS";
+        String texto = "IGREJAS JÁ CADASTRADOS";
         
         for (int i = 0; i < vetor.length; i++){
             System.out.println("PERCORRENDO VETOR");
@@ -64,29 +64,29 @@ public class RecadoDAO {
         return texto;
     }
 
-    public static void cadastrar(String nome){
-        System.out.println("ADICIONANDO RECADO");
-        Recado recado = new Recado();
-        recado.criar(null,nome);
-        if(RecadoDAO.addVetor(recado) == true){
-            System.out.println("RECADO ADICIONADO COM SUCESSO!");
+    public static void cadastrar(String nome, String tipo){
+        System.out.println("ADICIONANDO IGREJA");
+        Igreja igreja = new Igreja();
+        igreja.criar(nome, tipo);
+        if(IgrejaDAO.addVetor(igreja) == true){
+            System.out.println("IGREJA ADICIONADO COM SUCESSO!");
         }else{
-            System.out.println("NÃO FOI POSSíVEL ADICIONAR RECADO!");
+            System.out.println("NÃO FOI POSSíVEL ADICIONAR IGREJA!");
         }      
     }
-    public static void atualizar(String idS, String comentario){
+    public static void atualizar(String idS, String nome){
         int id = Util.stringToInt(idS);
-        System.out.println("ENCONTRANDO RECADO....");
-        if(comentario.length() > 1 ){
-            if (RecadoDAO.find(id)){
+        System.out.println("ENCONTRANDO IGREJA....");
+        if(nome.length() > 1 ){
+            if (IgrejaDAO.find(id)){
                 System.out.println("ITEM ENCONTRADO!");
-                Recado recado = RecadoDAO.getItemByID(id);
-                recado.setComentario(comentario);
+                Igreja igreja = IgrejaDAO.getItemByID(id);
+                igreja.setNome(nome);
                 
-                System.out.println("RECADO ATUALIZADO COM SUCESSO!");
-                Util.mostrarMSG("RECADO ATUALIZADO COM SUCESSO!");
+                System.out.println("IGREJA ATUALIZADO COM SUCESSO!");
+                Util.mostrarMSG("IGREJA ATUALIZADO COM SUCESSO!");
             }else{
-                Util.mostrarErro("RECADO NÃO ENCONTRADO");
+                Util.mostrarErro("IGREJA NÃO ENCONTRADO");
             }
         }else{
             Util.mostrarErro("PREENCHA OS CAMPOS!");
@@ -94,7 +94,7 @@ public class RecadoDAO {
         
            
     }
-    public static boolean  addVetor(Recado p) {
+    public static boolean  addVetor(Igreja p) {
         System.out.println("ADICIONANDO NO VETOR");
         for (int i = 0; i < vetor.length; i++) {
             System.out.println("Percorrendo vetor");
@@ -108,7 +108,7 @@ public class RecadoDAO {
         return false;
     }
 
-    public boolean remove(Recado p) {
+    public boolean remove(Igreja p) {
         for (int i = 0; i < vetor.length; i++) {
             if (vetor[i] == p) {
                vetor[i] = null;
@@ -128,7 +128,7 @@ public class RecadoDAO {
         return false;
     }
 
-    public static Recado getItemByID(int id) {
+    public static Igreja getItemByID(int id) {
         for (int i = 0; i <vetor.length; i++) {
             if (vetor[i] != null && vetor[i].id == id) {
                 return vetor[i];

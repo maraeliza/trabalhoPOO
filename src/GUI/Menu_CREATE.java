@@ -103,7 +103,7 @@ public class Menu_CREATE {
                         System.out.println("VALORES NÃO NULOS ADD");
                         System.out.println(this.valores[0] + " " + this.valores[1]);
 
-                        PresenteDAO.addPresente(this.valores[0], this.valores[1]);
+                        PresenteDAO.cadastrar(this.valores[0], this.valores[1]);
                     }
                 }
                 case "Recado" -> {
@@ -113,8 +113,9 @@ public class Menu_CREATE {
                     } else if (this.valores != null) {
                         System.out.println("VALORES NÃO NULOS ADD");
                         System.out.println(this.valores[0]);
-
-                        RecadoDAO.addRecado(null, this.valores[0]);
+                        RecadoDAO.cadastrar(this.valores[0]);
+              
+                        
                     }
                 }
             }

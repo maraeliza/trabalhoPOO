@@ -12,6 +12,8 @@ import javax.swing.JTextField;
 import javax.swing.JPanel;
 import DAO.PresenteDAO;
 
+import DAO.RecadoDAO;
+
 /**
  *
  * @author Mara
@@ -107,7 +109,18 @@ public class Menu_UPDATE {
                         System.out.println("VALORES NÃO NULOS ADD");
                         System.out.println("ID " + this.valores[0] + " " + this.valores[1] + this.valores[2]);
 
-                        PresenteDAO.upPresente(this.valores[0], this.valores[1], this.valores[2]);
+                        PresenteDAO.atualizar(this.valores[0], this.valores[1], this.valores[2]);
+                    }
+                }
+                case "Recado" -> {
+                    System.out.println("add valores");
+                    if (this.valores != null && this.nColetados < 2 && (this.valores[0] == "" || this.valores[1] == "")) {
+                        Util.mostrarErro("Preencha todos os valores!");
+                    } else if (this.valores != null) {
+                        System.out.println("VALORES NÃO NULOS ADD");
+                        System.out.println("ID " + this.valores[0] + " " + this.valores[1] );
+
+                        RecadoDAO.atualizar(this.valores[0], this.valores[1]);
                     }
                 }
             }
