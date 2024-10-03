@@ -50,6 +50,11 @@ public class Menu_UPDATE {
 
                 break;
             }
+            case "Recado" -> {
+                this.add("Comentário: ");
+
+                break;
+            }
         }
         try {
             Method metodo = this.classe.getMethod("getTexto");

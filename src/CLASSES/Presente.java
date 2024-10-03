@@ -103,13 +103,52 @@ public class Presente {
         }
         return dados;
     }
-    private void atualizar(){
+    
+    public void update(String nome, String tipo, Pessoa p, boolean escolheu){
+        boolean alterou = false;
+        if(nome.length() > 0){
+            this.nome = nome;
+            alterou = true;
+            
+        }
+        if(tipo.length() > 0){
+            this.tipo = tipo;
+            alterou = true;
+            
+        }
+        if(p != null){
+            this.pessoa = p;
+            alterou = true;
+            
+        }
+        if(escolheu != this.escolhido){
+            this.escolhido = escolheu;
+            alterou = true;
+            
+        }
+        if(alterou){
+            this.atualizarDataModificacao();
+        }
+        
+    }
+    public boolean escolher(Pessoa p){
+        
+        if(p != null &&  this.escolhido == false){
+            this.pessoa = p;
+            this.escolhido = true;
+            return true;
+        }
+        return false;
+    }
+            
+    public void atualizarDataModificacao(){
         
         this.dataModificacao = LocalDate.now();
     }
     
-    private void deletar(){
+    public void deletar(){
         
+        Presente.totalPresentes--;
         
     }
 }
