@@ -2,51 +2,46 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package trabalhopoo;
+package CLASSES;
+import DAO.PessoaDAO;
 import java.time.LocalDate;
 
 /**
  *
  * @author CAUPT - ALUNOS
  */
-public class Fornecedor {
-    int id;
-    
+public class Pessoa {
+    public int id;
     String nome;
-    String cnpj;
     String telefone;
-    double valorAPagar;
-    int parcelas;
-    String estado;
-    
-    
     LocalDate dataCriacao;
     LocalDate dataModificacao;
+    LocalDate nascimento;
+    public static int totalPessoas;
     
-    
-    
-    public void criar(int id, String nome, String cnpj){
-        this.id = id;
+    public void criar( String nome, String telefone, PessoaDAO dao){
+        this.id = totalPessoas++;
         this.nome = nome;
-        this.cnpj = cnpj;
-        
+       // this.nascimento = nasc;
+        this.telefone = telefone;
         this.dataCriacao = LocalDate.now();
-       
+        this.dataModificacao = null;
+        dao.add(this);
         
     }
     public String ler(){
-        String dados = "\nFornecedor "+this.id;
+        String dados = "\nPessoa "+this.id;
         dados+= "\nNome: "+this.nome;
-        dados+= "\nCNPJ: "+this.cnpj;
+        dados+= "\nData de nascimento: "+this.nascimento;
         dados+= "\nTelefone: "+this.telefone;
         return dados;
     }
-    public void atualizar(){
+    private void atualizar(){
         
         this.dataModificacao = LocalDate.now();
     }
     
-    public void deletar(){
+    private void deletar(){
         
         
     }

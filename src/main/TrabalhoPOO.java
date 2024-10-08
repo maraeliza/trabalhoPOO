@@ -2,8 +2,14 @@ package main;
 
 import DAO.PessoaDAO;
 import DAO.UserDAO;
-import modelo.Pessoa;
-import modelo.Usuario;
+import DAO.PresenteDAO;
+import DAO.DAOPAI;
+import DAO.RecadoDAO;
+import CLASSES.Pessoa;
+import CLASSES.Presente;
+import CLASSES.Usuario;
+import CLASSES.Recado;
+import GUI.MenuInicial;
 
 public class TrabalhoPOO {
 
@@ -12,10 +18,12 @@ public class TrabalhoPOO {
      */
     public static void main(String[] args) {
         PessoaDAO PDAO = new PessoaDAO();
-        UserDAO UDAO = new UserDAO(); 
+        UserDAO UDAO = new UserDAO();  
         Usuario user1 = new Usuario();
         Usuario user2 = new Usuario();
         
+        DAOPAI daoPresente = new DAOPAI(Presente.class, "Presente");
+        DAOPAI daoRecado = new DAOPAI(Recado.class, "Recado");
         Pessoa pessoa = new Pessoa();
         pessoa.criar("Mara", "65465465", PDAO);
         user1.criar(pessoa, "sys", "1234", UDAO);
@@ -23,13 +31,10 @@ public class TrabalhoPOO {
         Pessoa pessoa1 = new Pessoa();
         pessoa1.criar("Eliza", "7777 5555", PDAO);
         user2.criar(pessoa1, "tem", "4321", UDAO);
-         
-       
-        
-        PDAO.add(pessoa1);
         
         
-        
+        MenuInicial menu = new MenuInicial(daoPresente,daoRecado );
+        menu.exibir();
     }
 
 }

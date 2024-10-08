@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package trabalhopoo;
+package CLASSES;
 import java.time.LocalDate;
 
 /**
@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * @author CAUPT - ALUNOS
  */
 public class Fornecedor {
-    int id;
+    public int id;
     
     String nome;
     String cnpj;
@@ -23,10 +23,10 @@ public class Fornecedor {
     LocalDate dataCriacao;
     LocalDate dataModificacao;
     
+    public static int totalFornecedor;
     
-    
-    public void criar(int id, String nome, String cnpj){
-        this.id = id;
+    public void criar(String nome, String cnpj){
+        this.id = totalFornecedor++;
         this.nome = nome;
         this.cnpj = cnpj;
         
@@ -41,12 +41,12 @@ public class Fornecedor {
         dados+= "\nTelefone: "+this.telefone;
         return dados;
     }
-    public void atualizar(){
+    private void atualizar(){
         
         this.dataModificacao = LocalDate.now();
     }
     
-    public void deletar(){
+    private void deletar(){
         
         
     }

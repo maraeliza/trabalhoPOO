@@ -4,7 +4,7 @@
  */
 package DAO;
 
-import modelo.Usuario;
+import CLASSES.Usuario;
 
 /**
  *

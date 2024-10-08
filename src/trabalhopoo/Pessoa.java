@@ -16,12 +16,12 @@ public class Pessoa {
     LocalDate dataCriacao;
     LocalDate dataModificacao;
     LocalDate nascimento;
-    public static int totalPessoas;
     
-    public void criar( String nome, String telefone){
-        this.id = totalPessoas++;
+    
+    public void criar(int id, String nome, String telefone, LocalDate nasc){
+        this.id = id;
         this.nome = nome;
-       // this.nascimento = nasc;
+        this.nascimento = nasc;
         this.telefone = telefone;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = null;

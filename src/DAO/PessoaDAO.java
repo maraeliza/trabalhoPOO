@@ -4,22 +4,43 @@
  */
 package DAO;
 
-import modelo.Pessoa;
+import CLASSES.Pessoa;
 
 /**
  *
  * @author IFTM
  */
 public class PessoaDAO {
-    int id;
-    public Pessoa[] vetor = new Pessoa[100];
-    public static int itens;
+    private int id;
+    private Pessoa[] vetor;
+    private static int nItens;
+    
+    public PessoaDAO(){
+        this.setVetor();
+    }
+    public int setNItens(){
+        return this.nItens;
+    }
+    public int getItens(){
+        return this.nItens;
+    }
+    public boolean setVetor(){
+        if(this.nItens == 0){
+            this.vetor = new Pessoa[100];
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public Pessoa[] getVetor(){
+        return this.vetor;
+    }
     
     public boolean add(Pessoa p){
         for(int i = 0; i < this.vetor.length; i++){
             if(this.vetor[i] == null){
                 this.vetor[i] = p;
-                this.itens++;
+                this.nItens++;
                 return true;
             }
         }
@@ -30,7 +51,7 @@ public class PessoaDAO {
         for(int i = 0; i < this.vetor.length; i++){
             if(this.vetor[i] == p){
                 this.vetor[i] = null;
-                this.itens--;
+                this.nItens--;
                 return true;
             }
         }
@@ -54,6 +75,12 @@ public class PessoaDAO {
         }
         return null;
     }
+    
+    public void montarPainel(){
+        
+    }
+    
+    
     
     
 }
