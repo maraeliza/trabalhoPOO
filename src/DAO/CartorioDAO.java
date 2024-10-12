@@ -11,14 +11,14 @@ import GUI.Util;
  *
  * @author Mara
  */
-public class RecadoDAO {
+public class CartorioDAO {
     private Class<Recado> classe;
     private int id;
     private static Recado[] vetor;
     private static int nItens;
     
    
-    public RecadoDAO(){
+    public CartorioDAO(){
         
         this.classe = Recado.class;
         nItens = 0;
@@ -61,9 +61,6 @@ public class RecadoDAO {
                 
             }
         }
-        if(texto.equals("RECADOS JÁ CADASTRADOS")){
-             texto += "\n\nNENHUM ITEM ENCONTRADO!\n";
-        }    
         System.out.println("No método getTexto: "+texto);
         return texto;
     }
@@ -72,7 +69,7 @@ public class RecadoDAO {
         System.out.println("ADICIONANDO RECADO");
         Recado recado = new Recado();
         recado.criar(null,nome);
-        if(RecadoDAO.addVetor(recado) == true){
+        if(CartorioDAO.addVetor(recado) == true){
             System.out.println("RECADO ADICIONADO COM SUCESSO!");
         }else{
             System.out.println("NÃO FOI POSSíVEL ADICIONAR RECADO!");
@@ -82,9 +79,9 @@ public class RecadoDAO {
         int id = Util.stringToInt(idS);
         System.out.println("ENCONTRANDO RECADO....");
         if(comentario.length() > 1 ){
-            if (RecadoDAO.find(id)){
+            if (CartorioDAO.find(id)){
                 System.out.println("ITEM ENCONTRADO!");
-                Recado recado = RecadoDAO.getItemByID(id);
+                Recado recado = CartorioDAO.getItemByID(id);
                 recado.setComentario(comentario);
                 
                 System.out.println("RECADO ATUALIZADO COM SUCESSO!");

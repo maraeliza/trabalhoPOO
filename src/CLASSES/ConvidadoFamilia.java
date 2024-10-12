@@ -10,7 +10,7 @@ import java.time.LocalDate;
  *
  * @author CAUPT - ALUNOS
  */
-public class Recado {
+public class ConvidadoFamilia {
 
     public int id;
     Pessoa pessoa;

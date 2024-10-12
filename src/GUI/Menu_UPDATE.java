@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import DAO.PresenteDAO;
 
 import DAO.RecadoDAO;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -61,78 +62,81 @@ public class Menu_UPDATE {
 
             // Invoca o método estático (passando null porque não precisamos de uma instância)
             this.texto = (String) metodo.invoke(null);
-            this.texto.replaceAll("\n", "<br>");
             System.out.println(this.texto);
-            
-             montarPainel(texto);
+
+            montarPainel(texto);
         } catch (Exception e) {
             e.printStackTrace();
         }
-       
 
         return "";
     }
 
     public void montarPainel(String objetos) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        JLabel titulo = new JLabel("ATUALIZAR CAMPO DE " + this.nomeClasse.toUpperCase());
-        panel.add(titulo);
-        JLabel relatorio = new JLabel("<html>"+objetos.replaceAll("\n", "<br>")+"<br></html>");
-        panel.add(relatorio);
 
-        JTextField[] campos = new JTextField[this.vetor.length];
+        String conteudo = "\nATUALIZAR CAMPO DE " + this.nomeClasse.toUpperCase();
+
         this.valores = new String[10];
+        conteudo = "\nATUALIZAR " + this.nomeClasse.toUpperCase();
+        conteudo += "\n" + objetos + "\n\n";
+        conteudo += "\n\nINSIRA " + this.vetor[0].toUpperCase();
+        String result = JOptionPane.showInputDialog(null, conteudo, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
+      
+        int idInserido = Util.stringToInt(result);
+        this.valores[0] = result;
+        try {
+            Method metodo = this.classe.getMethod("find", int.class);
+            boolean existe = (boolean) metodo.invoke(null, idInserido);
 
-        this.nColetados = 0;
-        for (int i = 0; i < this.vetor.length; i++) {
-            if (this.vetor[i] != null) {
-                panel.add(new JLabel("\n" + this.vetor[i]));
-                campos[i] = new JTextField(10);
-                panel.add(campos[i]);
-            }
-        }
-        int result = JOptionPane.showConfirmDialog(null, panel, "UaiCasórioPro ", JOptionPane.OK_CANCEL_OPTION);;
-
-        if (result == JOptionPane.OK_OPTION) {
-            for (int i = 0; i < campos.length; i++) {
-                if (campos[i] != null) {
-                    String valor = campos[i].getText();
-                    this.valores[this.nColetados] = valor;
-                    System.out.println(this.vetor[i] + ": " + valor); // Exibe o valor
-                    this.nColetados++;
-                }
-
-            }
-
-            switch (this.nomeClasse) {
-                case "Presente" -> {
-                    System.out.println("add valores");
-                    if (this.valores != null && this.nColetados < 3 && (this.valores[0] == "" || this.valores[1] == "")) {
-                        Util.mostrarErro("Preencha todos os valores!");
-                    } else if (this.valores != null) {
-                        System.out.println("VALORES NÃO NULOS ADD");
-                        System.out.println("ID " + this.valores[0] + " " + this.valores[1] + this.valores[2]);
-
-                        PresenteDAO.atualizar(this.valores[0], this.valores[1], this.valores[2]);
+            if (existe) {
+                this.nColetados = 0;
+                for (int i = 1; i < this.vetor.length; i++) {
+                    if (this.vetor[i] != null && result != null) {
+                        conteudo = "\nATUALIZAR " + this.nomeClasse.toUpperCase();
+                        conteudo += "\n\nINSIRA " + this.vetor[i].toUpperCase();
+                        result = JOptionPane.showInputDialog(null, conteudo, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
+                        this.nColetados++;
+                        this.valores[this.nColetados] = result;
+                        
                     }
                 }
-                case "Recado" -> {
-                    System.out.println("add valores");
-                    if (this.valores != null && this.nColetados < 2 && (this.valores[0] == "" || this.valores[1] == "")) {
-                        Util.mostrarErro("Preencha todos os valores!");
-                    } else if (this.valores != null) {
-                        System.out.println("VALORES NÃO NULOS ADD");
-                        System.out.println("ID " + this.valores[0] + " " + this.valores[1] );
 
-                        RecadoDAO.atualizar(this.valores[0], this.valores[1]);
+                switch (this.nomeClasse) {
+                    case "Presente" -> {
+                        System.out.println("add valores");
+                        if (this.valores != null && this.nColetados < 3 && (this.valores[0] == "" || this.valores[1] == "")) {
+                            Util.mostrarErro("Preencha todos os valores!");
+                        } else if (this.valores != null) {
+                            System.out.println("VALORES NÃO NULOS ADD");
+                            System.out.println("ID " + this.valores[0] + " " + this.valores[1] + this.valores[2]);
+
+                            PresenteDAO.atualizar(this.valores[0], this.valores[1], this.valores[2]);
+                        }
+                    }
+                    case "Recado" -> {
+                        System.out.println("add valores");
+                        if (this.valores != null && this.nColetados < 2 && (this.valores[0] == "" || this.valores[1] == "")) {
+                            Util.mostrarErro("Preencha todos os valores!");
+                        } else if (this.valores != null) {
+                            System.out.println("VALORES NÃO NULOS ADD");
+                            System.out.println("ID " + this.valores[0] + " " + this.valores[1]);
+
+                            RecadoDAO.atualizar(this.valores[0], this.valores[1]);
+                        }
                     }
                 }
+
+            } else {
+                Util.mostrarErro("Elemento de id " + result + " não encontrado!");
             }
-
-        } else {
-
-            System.out.println("Cancelada!");
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            Util.mostrarErro("Digite um ID válido!");
         }
 
     }

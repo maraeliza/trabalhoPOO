@@ -6,36 +6,22 @@ import DAO.PresenteDAO;
 import DAO.RecadoDAO;
 import CLASSES.Pessoa;
 import CLASSES.Usuario;
-import GUI.MenuInicial;
+import GUI.TelaInicial;
 
 public class TrabalhoPOO {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        PessoaDAO PDAO = new PessoaDAO();
-        UserDAO UDAO = new UserDAO();  
-        Usuario user1 = new Usuario();
-        Usuario user2 = new Usuario();
-        
-        Pessoa pessoa = new Pessoa();
-        pessoa.criar("Mara", "65465465", PDAO);
-        user1.criar(pessoa, "sys", "1234", UDAO);
-        
-        Pessoa pessoa1 = new Pessoa();
-        pessoa1.criar("Eliza", "7777 5555", PDAO);
-        user2.criar(pessoa1, "tem", "4321", UDAO);
-        
+    public static void main(String[] args) {        
+        UserDAO userDAO = new UserDAO();
         PresenteDAO presenteDAO = new PresenteDAO();
-        presenteDAO.setVetor();
-        
         RecadoDAO recadoDAO = new RecadoDAO();
-        recadoDAO.setVetor();
+        PessoaDAO pessoaDAO = new PessoaDAO();
         
-        PDAO.add(pessoa1);
+       
         
-        MenuInicial menu = new MenuInicial();
+        TelaInicial menu = new TelaInicial();
         menu.exibir();
     }
 

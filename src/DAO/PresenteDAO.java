@@ -22,6 +22,7 @@ public class PresenteDAO {
         
         this.classe = Presente.class;
         nItens = 0;
+         this.setVetor();
     }
     public static Class<Presente> getClasse(){
         return Presente.class;
@@ -60,6 +61,9 @@ public class PresenteDAO {
                 
             }
         }
+         if(texto.equals("PRESENTES JÁ CADASTRADOS")){
+             texto += "\n\nNENHUM ITEM ENCONTRADO!\n";
+        }  
         System.out.println("No método getTexto: "+texto);
         return texto;
     }

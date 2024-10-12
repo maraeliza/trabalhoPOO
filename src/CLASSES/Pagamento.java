@@ -35,7 +35,7 @@ public class Pagamento {
     }
     public String ler(){
         String dados = "\nMural de Recados "+this.id;
-        dados+= "\nNome: "+this.pessoa.nome;
+        dados+= "\nNome: "+this.pessoa.getNome();
         dados+= "\nDescricao: "+this.descricao;
         
         return dados;

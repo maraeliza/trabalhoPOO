@@ -97,7 +97,7 @@ public class Presente {
         
         if(this.escolhido){
             dados += "\nEscolhido: SIM";
-            dados += "\nPessoa "+this.pessoa.nome;
+            dados += "\nPessoa "+this.pessoa.getNome();
         }else{
             dados += "\nEscolhido: NÃO";
         }

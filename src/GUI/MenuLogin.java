@@ -4,42 +4,47 @@
  */
 package GUI;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.*;
+import DAO.UserDAO;
+import CLASSES.Usuario;
 /**
  *
  * @author Mara
  */
 public class MenuLogin {
     
-    
-      JPanel panel = new JPanel();
-      void criar(){
-          panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-      }
-      
       void exibir(){
-            this.criar();
-            
-            JLabel titulo = new JLabel("LOGIN");
-            panel.add(titulo);
-                   
-            panel.add(
-                    new JLabel("Insira seu login: "));
-            panel.add(
-                    new JTextField(10));
-            panel.add(
-                    new JLabel("Insira sua senha: "));
-            panel.add(
-                    new JTextField(10));
-
-            int result = JOptionPane.showConfirmDialog(null, panel, "UaiCasórioPro ", JOptionPane.OK_CANCEL_OPTION);
-            if (result == JOptionPane.OK_OPTION) {
-                // Lógica para processar os inputs
-            }          
+          String texto = "\nLOGAR\n";
+          texto += "\nLOGIN: ";
+          String result = JOptionPane.showInputDialog(null, texto, "admin");
+          
+          if(result != null && result.length() > 1){
+              
+              String user = result;
+              texto = "\nLOGAR\n";
+              texto = "SENHA: ";
+              result = JOptionPane.showInputDialog(null, texto, "1234");
+              System.out.println("Senha digitada: "+result);
+              if(result != null && result.length() > 3){
+                  System.out.println("autenticando usuario: "+user);
+                  if(UserDAO.autentica(user, result) == true){
+                        Usuario usuario = UserDAO.getUser(user);
+                        MenuInicial menu = new MenuInicial();
+                        menu.exibir(true, usuario);
+                  }else{
+                      
+                      Util.mostrarErro("Não foi possível realizar login! \nVerifique suas credenciais e tente novamente!");
+                  }
+                  
+                  
+                  
+              }else{
+                  Util.mostrarErro("Digite sua senha!");
+              }
+          }else{
+              Util.mostrarErro("Digite seu login!");
+              
+          }
       }
 
 }

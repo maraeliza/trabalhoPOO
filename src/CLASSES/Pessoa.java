@@ -12,21 +12,22 @@ import java.time.LocalDate;
  */
 public class Pessoa {
     public int id;
-    String nome;
+    private String nome;
     String telefone;
     LocalDate dataCriacao;
     LocalDate dataModificacao;
     LocalDate nascimento;
     public static int totalPessoas;
+    private String tipo;
     
-    public void criar( String nome, String telefone, PessoaDAO dao){
+    public void criar( String nome, String telefone, String tipo){
         this.id = totalPessoas++;
         this.nome = nome;
        // this.nascimento = nasc;
         this.telefone = telefone;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = null;
-        dao.add(this);
+        this.tipo = tipo;
         
     }
     public String ler(){
@@ -43,6 +44,14 @@ public class Pessoa {
     
     private void deletar(){
         
+        
+    }
+    public String getNome(){
+        return this.nome;
+        
+    }
+     public String getTipo(){
+        return this.tipo;
         
     }
 }

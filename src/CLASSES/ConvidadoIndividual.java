@@ -33,7 +33,7 @@ public class ConvidadoIndividual {
     }
     public String ler(){
         String dados = "\nConvidado Individual "+this.id;
-        dados+= "\nNome: "+this.pessoa.nome;
+        dados+= "\nNome: "+this.pessoa.getNome();
         dados+= "\nParentesco: "+this.parentesco;
         dados+= "\nConfirmado: "+this.confirmacao;
         return dados;

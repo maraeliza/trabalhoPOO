@@ -15,8 +15,28 @@ public class PessoaDAO {
     private Pessoa[] vetor;
     private static int nItens;
     
+    
     public PessoaDAO(){
+        
         this.setVetor();
+        Pessoa pessoa1 = new Pessoa();
+        pessoa1.criar("ADMINISTRADOR", "7777 5555", "adm");
+        UserDAO.add(pessoa1, "admin", "1234", 1);
+        
+        Pessoa pessoa2 = new Pessoa();
+        pessoa2.criar("João", "3432 2556", "NOIVO");
+        UserDAO.add(pessoa2, "jo2024", "1234", 1);
+       
+        Pessoa pessoa3 = new Pessoa();
+        pessoa3.criar("Maria", "3431 1335", "NOIVO");
+        UserDAO.add(pessoa3, "ma2024", "1234", 1);
+        
+        Pessoa pessoa4 = new Pessoa();
+        pessoa4.criar("Ana", "3431 1335", "convidado");
+        UserDAO.add(pessoa3, "an2024", "1234", 2);
+        
+        
+        
     }
     public int setNItens(){
         return this.nItens;
@@ -75,7 +95,17 @@ public class PessoaDAO {
         }
         return null;
     }
-    
+    public Pessoa[] getNoivos(){
+        Pessoa noivos[] = new Pessoa[2];
+        int n = 0;
+         for(int i = 0; i < this.vetor.length; i++){
+            if(this.vetor[i] != null && this.vetor[i].getTipo().equals("NOIVO")){
+               noivos[n] = this.vetor[i];
+               n++;
+            }
+        }
+        return noivos;
+    }
     public void montarPainel(){
         
     }

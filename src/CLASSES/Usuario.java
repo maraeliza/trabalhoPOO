@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Usuario {
     public int id;
     public Pessoa pessoa;
-     String tipo;
+    private int tipo;
      String login;
      String senha;
      LocalDate dataCriacao;
@@ -21,30 +21,42 @@ public class Usuario {
     
     public static int totalUsuario;
     
-    public void criar(Pessoa pessoa, String login, String senha, UserDAO dao){
+    public void criar(Pessoa pessoa, String login, String senha, int tipo){
         this.id = totalUsuario++;
         this.pessoa = pessoa;
         this.login = login;
         this.senha = senha;
+        this.tipo = tipo;
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = null;
-        dao.add(this);
+       
     }
-    private String ler(){
+    public String ler(){
         String dados = "\nUsuario "+this.id;
         dados+= "\nLogin: "+this.login;
         dados+= "\nSenha: "+this.senha;
         return dados;
     }
-    private void atualizar(){
+    public void atualizar(){
         
         this.dataModificacao = LocalDate.now();
     }
     
-    private void deletar(){
+    public void deletar(){
         
         
     }
-    
-    
+     public String getLogin(){
+         System.out.println("LOGIN "+this.login);
+        return this.login;
+    }
+     public String getSenha(){
+        return this.senha;
+    }
+    public String getNome(){
+        return this.pessoa.getNome();
+    }
+      public int getTipo(){
+        return this.tipo;
+    }
 }
