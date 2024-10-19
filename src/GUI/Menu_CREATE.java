@@ -4,14 +4,11 @@
  */
 package GUI;
 
-import java.lang.reflect.Method;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
 import DAO.PresenteDAO;
 import DAO.RecadoDAO;
+import CLASSES.Usuario;
+import DAO.PessoaDAO;
 
 /**
  *
@@ -24,20 +21,18 @@ public class Menu_CREATE {
     private String vetor[];
     private String valores[];
     private int nColetados;
+    private Usuario userLogado;
 
-    public void exibir(Class<?> clazzDAO, String clazzName, boolean logou) {
+    public void exibir(Class<?> clazzDAO, String clazzName, Usuario user) {
+
         this.vetor = new String[10];
-
         this.nomeClasse = clazzName;
-        if (this.nomeClasse == "Recado" && logou == false) {
-            Util.mostrarErro("Logue para adicionar recados!");
-            return;
-        } else {
-            try {
-                this.getTexto();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        this.userLogado = user;
+
+        try {
+            this.getTexto();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -45,6 +40,7 @@ public class Menu_CREATE {
     public String getTexto() {
         this.texto = "";
         this.cleanVetor();
+        System.out.println("MENU DA CLASSE " + this.nomeClasse);
         switch (this.nomeClasse) {
 
             case "Presente" -> {
@@ -58,6 +54,14 @@ public class Menu_CREATE {
 
                 break;
             }
+            case "Pessoa" -> {
+                this.add("Nome: ");
+                this.add("Telefone: ");
+                this.add("Tipo: ");
+                this.add("Data de Nascimento: ");
+                break;
+            }
+
         }
 
         montarPainel();
@@ -93,13 +97,33 @@ public class Menu_CREATE {
                 }
             }
             case "Recado" -> {
-                System.out.println("add valores");
+                System.out.println("add valores na classe recado");
                 if (this.valores != null && this.nColetados < 1 && (this.valores[0] == "")) {
                     Util.mostrarErro("Preencha todos os valores!");
                 } else if (this.valores != null) {
                     System.out.println("VALORES NÃO NULOS ADD");
                     System.out.println(this.valores[0]);
-                    RecadoDAO.cadastrar(this.valores[0]);
+                    if (this.userLogado != null) {
+                        RecadoDAO.cadastrar(this.valores[0], this.userLogado.getPessoa());
+                    } else {
+
+                        RecadoDAO.cadastrar(this.valores[0], null);
+                    }
+
+                }
+            }
+            case "Pessoa" -> {
+                System.out.println("add valores na classe pessoa");
+                if (this.valores != null && this.nColetados < 1 && (this.valores[0] == "")) {
+                    Util.mostrarErro("Preencha todos os valores!");
+                } else if (this.valores != null) {
+                    System.out.println("VALORES NÃO NULOS ADD");
+                    System.out.println(this.valores[0]);
+                    if (this.userLogado != null) {
+                        PessoaDAO.cadastrar(this.valores);
+                    } else {
+
+                    }
 
                 }
             }

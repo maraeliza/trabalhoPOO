@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package CLASSES;
+
 import GUI.Util;
 import java.time.LocalDate;
 
@@ -10,16 +11,16 @@ import java.time.LocalDate;
  *
  * @author CAUPT - ALUNOS
  */
-public class Recado {
+public class Recado implements ClasseInterface {
 
-    public int id;
-    Pessoa pessoa;
-    String comentario;
+    private int id;
+    private Pessoa pessoa;
+    private String comentario;
 
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;
+    private LocalDate dataCriacao;
+    private LocalDate dataModificacao;
 
-    public static int totalRecados;
+    public static int total;
 
     public int getId() {
         return this.id;
@@ -29,12 +30,12 @@ public class Recado {
         this.id = id;
     }
 
-    public int getTotalRecados() {
-        return totalRecados;
+    public int getTotal() {
+        return total;
     }
 
-    public static void setTotalRecados(int t) {
-        totalRecados = t;
+    public static void setTotal(int t) {
+        total = t;
     }
 
     public String getComentario() {
@@ -63,52 +64,61 @@ public class Recado {
         return this.dataModificacao;
     }
 
-    public void criar(Pessoa pessoa, String comentario) {
-        this.id = ++totalRecados;
-        this.pessoa = pessoa;
-        this.comentario = comentario;
-        this.dataCriacao = LocalDate.now();
-        this.dataModificacao = null;
+    public void criar(Object vetor[]) {
 
+        if (vetor[1] != null) {
+            this.comentario = (String) vetor[1];
+            this.dataCriacao = LocalDate.now();
+            this.dataModificacao = null;
+            this.id = ++total;
+        }
+        if (vetor[0] != null) {
+            this.pessoa = (Pessoa) vetor[0];
+        }
     }
 
-public void update(String comentario,  Pessoa p){
+    public void update(Object vetor[]) {
         boolean alterou = false;
-        if(comentario.length() > 0){
-            this.comentario = comentario;
-            alterou = true;
-            
+        if (vetor[0] != null) {
+            String comentario = (String) vetor[0];
+            if (comentario.length() > 0) {
+                this.comentario = comentario;
+                alterou = true;
+
+            }
         }
-       
-        if(p != null){
-            this.pessoa = p;
-            alterou = true;
-            
+        if (vetor[1] != null) {
+            Pessoa p = (Pessoa) vetor[2];
+            if (p != null) {
+                this.pessoa = p;
+                alterou = true;
+
+            }
         }
-        
-        if(alterou){
+
+        if (alterou) {
             this.atualizarDataModificacao();
         }
-        
+
     }
-    private void atualizarDataModificacao() {
+
+    public void atualizarDataModificacao() {
 
         this.dataModificacao = LocalDate.now();
     }
 
-    private void deletar() {
-        --totalRecados;
+    public void deletar() {
+        --total;
     }
 
     public String ler() {
         String dados = "";
         dados = "\n\nID: " + this.id;
         dados += "\n   Comentário: " + this.comentario;
-        if(this.pessoa != null){
+        if (this.pessoa != null) {
             dados += "\n   Autor: " + this.pessoa.getNome();
         }
         dados += "\n Data de criação: " + Util.dateToString(this.dataCriacao);
-        
 
         return dados;
     }

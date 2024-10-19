@@ -1,7 +1,7 @@
 package main;
 
 import DAO.PessoaDAO;
-import DAO.UserDAO;
+import DAO.UsuarioDAO;
 import DAO.PresenteDAO;
 import DAO.RecadoDAO;
 import CLASSES.Pessoa;
@@ -14,15 +14,16 @@ public class TrabalhoPOO {
      * @param args the command line arguments
      */
     public static void main(String[] args) {        
-        UserDAO userDAO = new UserDAO();
+        UsuarioDAO userDAO = new UsuarioDAO();
         PresenteDAO presenteDAO = new PresenteDAO();
         RecadoDAO recadoDAO = new RecadoDAO();
         PessoaDAO pessoaDAO = new PessoaDAO();
         
        
-        
+        String op = "";
         TelaInicial menu = new TelaInicial();
-        menu.exibir();
+        op = menu.exibir();
+        System.out.println("FORA DO MENU A OPCAO INICIAL ESCOLHIDA E "+op);
     }
 
 }

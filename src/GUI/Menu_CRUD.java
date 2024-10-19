@@ -25,12 +25,12 @@ public class Menu_CRUD {
     private Usuario user;
 
     private void definirTexto(String classNome) {
-        this.texto = "\n\nMENU DE " + classNome + "S";
+        this.texto = "\n\nMENU DE " + classNome ;
         this.texto += "\n\nEscolha a opção a seguir ";
         this.texto += "\n1. Adicionar novo";
         this.texto += "\n2. Ver todos";
         System.out.println("DEFINIR TEXTO ");
-        
+
         if (this.user != null && this.user.getTipo() == 1) {
             this.texto += "\n3. Atualizar";
             this.texto += "\n4. Deletar";
@@ -47,20 +47,20 @@ public class Menu_CRUD {
         System.out.println("Exibindo o menu de edição de objetos da classe");
         this.logou = logou;
         this.user = user;
-        
-       
-        if(this.user != null){
+
+        if (this.user != null) {
             this.tipoUsuario = user.getTipo();
-        }else{
+        } else {
             this.tipoUsuario = 0;
         }
-        
+
         System.out.println("exibindo o menu de edição da classe!");
         do {
 
             this.tipoClasseDAO = clazzDAO;
             this.tipoClasse = this.tipoClasseDAO.getSimpleName().replace("DAO", "");
-            System.out.println(this.tipoClasse);
+           this.tipoClasse = this.tipoClasse.replace("_", " ");
+           
             String classe = this.tipoClasse.toUpperCase();
             this.definirTexto(classe);
 
@@ -71,58 +71,63 @@ public class Menu_CRUD {
     }
 
     private void lidarEscolha() {
+        if (this.op == null) {
+            MenuInicial menu = new MenuInicial();
+            menu.exibir(this.logou, this.user);
+        } else {
+            this.o = Util.stringToInt(this.op);
+            switch (o) {
 
-        this.o = Util.stringToInt(this.op);
-        switch (o) {
+                case 1 -> {
+                    Menu_CREATE menuAdd = new Menu_CREATE();
+                    System.out.println("menu de criar feito com sucesso");
+                    menuAdd.exibir(this.tipoClasseDAO, this.tipoClasse, this.user);
+                    System.out.println("menu exibido com sucesso");
+                    break;
+                }
+                case 2 -> {
+                    Menu_READ menuVer = new Menu_READ();
+                    System.out.println("ver cadastros");
+                    menuVer.exibir(this.tipoClasseDAO, this.tipoClasse);
+                    break;
+                }
+                case 3 -> {
+                    if (this.user != null && this.user.getTipo() == 1) {
+                        Menu_UPDATE menuUp = new Menu_UPDATE();
+                        System.out.println("atualizar");
+                        menuUp.exibir(this.tipoClasseDAO, this.tipoClasse);
+                    } else {
+                        MenuInicial menu = new MenuInicial();
+                        menu.exibir(this.logou, this.user);
+                    }
 
-            case 1 -> {
-                Menu_CREATE menuAdd = new Menu_CREATE();
-                menuAdd.exibir(this.tipoClasseDAO, this.tipoClasse, this.logou);
+                    break;
+                }
+                case 4 -> {
+                    if (this.user != null && this.user.getTipo() == 1) {
+                        Menu_DEL menuDel = new Menu_DEL();
+                        System.out.println("deletar");
+                        menuDel.exibir(this.tipoClasseDAO, this.tipoClasse);
+                    } else {
+                        MenuInicial menu = new MenuInicial();
+                        menu.exibir(this.logou, this.user);
+                    }
 
-                break;
-            }
-            case 2 -> {
-                Menu_READ menuVer = new Menu_READ();
-                System.out.println("ver cadastros");
-                menuVer.exibir(this.tipoClasseDAO, this.tipoClasse);
-                break;
-            }
-            case 3 -> {
-                if (this.user != null && this.user.getTipo() == 1) {
-                    Menu_UPDATE menuUp = new Menu_UPDATE();
-                    System.out.println("atualizar");
-                    menuUp.exibir(this.tipoClasseDAO, this.tipoClasse);
-                } else {
+                    break;
+                }
+                case 5 -> {
                     MenuInicial menu = new MenuInicial();
                     menu.exibir(this.logou, this.user);
+                    break;
                 }
 
-                break;
-            }
-            case 4 -> {
-                if (this.user != null && this.user.getTipo() == 1) {
-                    Menu_DEL menuDel = new Menu_DEL();
-                    System.out.println("deletar");
-                    menuDel.exibir(this.tipoClasseDAO, this.tipoClasse);
-                } else {
+                default -> {
                     MenuInicial menu = new MenuInicial();
                     menu.exibir(this.logou, this.user);
+                    break;
                 }
 
-                break;
             }
-            case 5 -> {
-                MenuInicial menu = new MenuInicial();
-                menu.exibir(this.logou, this.user);
-                break;
-            }
-
-            default -> {
-                MenuInicial menu = new MenuInicial();
-                menu.exibir(this.logou, this.user);
-                break;
-            }
-
         }
 
     }

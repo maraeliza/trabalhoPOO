@@ -4,28 +4,28 @@
  */
 package DAO;
 
-import CLASSES.Presente;
+import CLASSES.Recado;
 import GUI.Util;
 
 /**
  *
  * @author Mara
  */
-public class PresenteDAO {
-    private Class<Presente> classe;
+public class FornecedorDAO {
+    private Class<Recado> classe;
     private int id;
-    private static Presente[] vetor;
+    private static Recado[] vetor;
     private static int nItens;
     
    
-    public PresenteDAO(){
+    public FornecedorDAO(){
         
-        this.classe = Presente.class;
+        this.classe = Recado.class;
         nItens = 0;
          this.setVetor();
     }
-    public static Class<Presente> getClasse(){
-        return Presente.class;
+    public static Class<Recado> getClasse(){
+        return Recado.class;
     }
     public int setNItens() {
         return nItens;
@@ -36,20 +36,20 @@ public class PresenteDAO {
     }
 
     public boolean setVetor() {
-        if (nItens == 0) {
-            this.vetor = new Presente[100];
+        if (this.nItens == 0) {
+            this.vetor = new Recado[100];
             return true;
         } else {
             return false;
         }
     }
 
-    public Presente[] getVetor() {
+    public Recado[] getVetor() {
         return this.vetor;
     }
     
     public static String getTexto(){
-        String texto = "PRESENTES JÁ CADASTRADOS";
+        String texto = "RECADOS JÁ CADASTRADOS";
         
         for (int i = 0; i < vetor.length; i++){
             System.out.println("PERCORRENDO VETOR");
@@ -61,41 +61,33 @@ public class PresenteDAO {
                 
             }
         }
-         if(texto.equals("PRESENTES JÁ CADASTRADOS")){
-             texto += "\n\nNENHUM ITEM ENCONTRADO!\n";
-        }  
         System.out.println("No método getTexto: "+texto);
         return texto;
     }
 
-    public static void cadastrar(String nome, String tipo){
-        System.out.println("ADICIONANDO PRESENTE");
-        Presente presente = new Presente();
-        String v[] = new String[2];
-        v[0] = nome;
-        v[1] = tipo;
-        presente.criar(v);
-        if(PresenteDAO.addVetor(presente) == true){
-            System.out.println("PRESENTE ADICIONADO COM SUCESSO!");
+    public static void cadastrar(String nome){
+        System.out.println("ADICIONANDO RECADO");
+        Recado recado = new Recado();
+        recado.criar(null,nome);
+        if(FornecedorDAO.addVetor(recado) == true){
+            System.out.println("RECADO ADICIONADO COM SUCESSO!");
         }else{
-            System.out.println("NÃO FOI POSSíVEL ADICIONAR PRESENTE!");
+            System.out.println("NÃO FOI POSSíVEL ADICIONAR RECADO!");
         }      
     }
-    public static void atualizar(String idS, String nome, String tipo){
+    public static void atualizar(String idS, String comentario){
         int id = Util.stringToInt(idS);
-        System.out.println("ENCONTRANDO PRESENTE....");
-        if(nome.length() > 1 && tipo.length() > 0){
-            if (PresenteDAO.find(id)){
-                String v[] = new String[5];
-                v[0] = nome;
-                v[1] = tipo;
+        System.out.println("ENCONTRANDO RECADO....");
+        if(comentario.length() > 1 ){
+            if (FornecedorDAO.find(id)){
                 System.out.println("ITEM ENCONTRADO!");
-                Presente presente = PresenteDAO.getItemByID(id);
-                presente.update(v);
-                System.out.println("PRESENTE ATUALIZADO COM SUCESSO!");
-                Util.mostrarMSG("PRESENTE ATUALIZADO COM SUCESSO!");
+                Recado recado = FornecedorDAO.getItemByID(id);
+                recado.setComentario(comentario);
+                
+                System.out.println("RECADO ATUALIZADO COM SUCESSO!");
+                Util.mostrarMSG("RECADO ATUALIZADO COM SUCESSO!");
             }else{
-                Util.mostrarErro("PRESENTE NÃO ENCONTRADO");
+                Util.mostrarErro("RECADO NÃO ENCONTRADO");
             }
         }else{
             Util.mostrarErro("PREENCHA OS CAMPOS!");
@@ -103,7 +95,7 @@ public class PresenteDAO {
         
            
     }
-    public static boolean  addVetor(Presente p) {
+    public static boolean  addVetor(Recado p) {
         System.out.println("ADICIONANDO NO VETOR");
         for (int i = 0; i < vetor.length; i++) {
             System.out.println("Percorrendo vetor");
@@ -117,7 +109,7 @@ public class PresenteDAO {
         return false;
     }
 
-    public boolean remove(Presente p) {
+    public boolean remove(Recado p) {
         for (int i = 0; i < vetor.length; i++) {
             if (vetor[i] == p) {
                vetor[i] = null;
@@ -130,16 +122,16 @@ public class PresenteDAO {
   
     public static boolean find(int id) {
         for (int i = 0; i < vetor.length; i++) {
-            if (vetor[i] != null && vetor[i].getId() == id) {
+            if (vetor[i] != null && vetor[i].id == id) {
                 return true;
             }
         }
         return false;
     }
 
-    public static Presente getItemByID(int id) {
+    public static Recado getItemByID(int id) {
         for (int i = 0; i <vetor.length; i++) {
-            if (vetor[i] != null && vetor[i].getId() == id) {
+            if (vetor[i] != null && vetor[i].id == id) {
                 return vetor[i];
             }
         }
@@ -147,7 +139,7 @@ public class PresenteDAO {
     }
      public static boolean delItemByID(int id) {
         for (int i = 0; i <vetor.length; i++) {
-            if (vetor[i] != null && vetor[i].getId() == id) {
+            if (vetor[i] != null && vetor[i].id == id) {
                 vetor[i] = null;
                 return true;
             }

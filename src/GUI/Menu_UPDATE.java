@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DAO.PessoaDAO;
 import java.lang.reflect.Method;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -56,6 +57,13 @@ public class Menu_UPDATE {
 
                 break;
             }
+            case "Pessoa" -> {
+                this.add("Nome: ");
+                this.add("Telefone: ");
+                this.add("Tipo: ");
+                this.add("Data de Nascimento: ");
+                break;
+            }
         }
         try {
             Method metodo = this.classe.getMethod("getTexto");
@@ -81,8 +89,8 @@ public class Menu_UPDATE {
         conteudo += "\n" + objetos + "\n\n";
         conteudo += "\n\nINSIRA " + this.vetor[0].toUpperCase();
         String result = JOptionPane.showInputDialog(null, conteudo, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
-      
-        int idInserido = Util.stringToInt(result);
+        if(result != null){
+          int idInserido = Util.stringToInt(result);
         this.valores[0] = result;
         try {
             Method metodo = this.classe.getMethod("find", int.class);
@@ -124,6 +132,17 @@ public class Menu_UPDATE {
                             RecadoDAO.atualizar(this.valores[0], this.valores[1]);
                         }
                     }
+                    case "Pessoa" -> {
+                        System.out.println("add valores");
+                        if (this.valores != null && this.nColetados < 2 && (this.valores[0] == "" || this.valores[1] == "")) {
+                            Util.mostrarErro("Preencha todos os valores!");
+                        } else if (this.valores != null) {
+                            System.out.println("VALORES NÃO NULOS ADD");
+                            System.out.println("ID " + this.valores[0] + " " + this.valores[1]);
+
+                            PessoaDAO.atualizar(this.valores);
+                        }
+                    }
                 }
 
             } else {
@@ -137,7 +156,11 @@ public class Menu_UPDATE {
             e.printStackTrace();
         } catch (Exception e) {
             Util.mostrarErro("Digite um ID válido!");
+        }  
+        }else{
+             Util.mostrarErro("Digite um ID válido!");
         }
+        
 
     }
 

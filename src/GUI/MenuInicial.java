@@ -21,7 +21,9 @@ public class MenuInicial {
     private static boolean logou;
     private String opcoes[];
     private Usuario userLogado;
-    private String listaClasses[] = new String[20];
+    private String listaNomeClasses[] = new String[20];
+    private Class<?>[] listaClassesDAO;
+    private int nOps;
 
     public MenuInicial() {
         MenuInicial.logou = false;
@@ -46,11 +48,27 @@ public class MenuInicial {
         listaClasses[11] = "PAGAMENTO";
         listaClasses[12] = "RELATÓRIOS";
 
-        this.listaClasses = listaClasses;
+        this.listaNomeClasses = listaClasses;
+        this.listaClassesDAO = new Class<?>[]{
+            RecadoDAO.class, // RECADOS
+            PresenteDAO.class, // PRESENTES
+            PessoaDAO.class, // PESSOA
+            UsuarioDAO.class, // USUÁRIOS
+            FornecedorDAO.class, // FORNECEDOR
+            EventoDAO.class, // EVENTO
+            CerimonialDAO.class, // CERIMONIAL
+            IgrejaDAO.class, // IGREJA
+            CartorioDAO.class, // CARTÓRIO
+            Convidado_IndividualDAO.class, // CONVIDADO INDIVIDUAL
+            Convidado_FamiliaDAO.class, // CONVIDADO FAMÍLIA
+            PagamentoDAO.class, // PAGAMENTO
+            RelatorioDAO.class // RELATÓRIOS
+        };
+
     }
 
     private String[] getLista() {
-        return this.listaClasses;
+        return this.listaNomeClasses;
     }
 
     private void definirTexto(String noivo, String noiva) {
@@ -74,14 +92,14 @@ public class MenuInicial {
 
     private String definirOpcoes() {
         String Opcoes = "";
-        int nOps = 1;
+        this.nOps = 1;
         System.out.println("definindo opcoes");
         if (this.userLogado != null && this.userLogado.getTipo() == 1) {
             System.out.println("Usuario adm");
-            for (int n = 0; n < this.listaClasses.length; n++) {
-                if (this.listaClasses[n] != null) {
-                    Opcoes += "\n" + Util.intToString(nOps) + ". " + this.listaClasses[n];
-                    nOps++;
+            for (int n = 0; n < this.listaNomeClasses.length; n++) {
+                if (this.listaNomeClasses[n] != null) {
+                    Opcoes += "\n" + Util.intToString(this.nOps) + ". " + this.listaNomeClasses[n];
+                    this.nOps++;
                 }
 
             }
@@ -89,13 +107,13 @@ public class MenuInicial {
         } else {
             System.out.println("Usuario NÃO adm");
             for (int n = 0; n < 2; n++) {
-                if (this.listaClasses[n] != null) {
-                    Opcoes += "\n" + Util.intToString(nOps) + ". " + this.listaClasses[n];
-                    nOps++;
+                if (this.listaNomeClasses[n] != null) {
+                    Opcoes += "\n" + Util.intToString(this.nOps) + ". " + this.listaNomeClasses[n];
+                    this.nOps++;
                 }
             }
         }
-        Opcoes += "\n" + Util.intToString(nOps) + ". SAIR";
+        Opcoes += "\n" + Util.intToString(this.nOps) + ". SAIR";
         return Opcoes;
     }
 
@@ -110,172 +128,38 @@ public class MenuInicial {
 
             if (this.op != null) {
                 o = Util.stringToInt(this.op);
+                this.lidarEscolha(o);
             } else {
-
-                o = 4;
+                TelaInicial menu = new TelaInicial();
+                op = menu.exibir();
             }
-
-            this.lidarEscolha(o);
-        } while (o != 0 && o != 3);
+        } while (o != 0 && this.op != null);
 
     }
 
     private void lidarEscolha(int o) {
-        if (this.userLogado != null) {
-            if (this.userLogado.getTipo() == 1) {
-                switch (o) {
-
-                    case 1 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(RecadoDAO.class, MenuInicial.logou, this.userLogado);
-                        break;
-                    }
-                    case 2 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(PresenteDAO.class, MenuInicial.logou, this.userLogado);
-                        break;
-                    }
-                    case 3 -> {
-                        TelaInicial menu = new TelaInicial();
-                        menu.exibir();
-                    }
-                    case 4 -> {
-                        TelaInicial menu = new TelaInicial();
-                        menu.exibir();
-                        break;
-                    }
-                    default -> {
-                        TelaInicial menu = new TelaInicial();
-                        menu.exibir();
-                        break;
-                    }
+        if (o >= this.nOps) {
+            TelaInicial menu = new TelaInicial();
+            op = menu.exibir();
+        } else {
+            if (this.userLogado != null) {
+                if (this.userLogado.getTipo() == 1) {
+                    //MENU DO USUARIO ADM
+                    criarMenuCRUD(this.listaClassesDAO[o - 1]);
+                } else {
+                    //MENU DO USUARIO CONVIDADO LOGADO
+                    criarMenuCRUD(this.listaClassesDAO[o - 1]);
                 }
             } else {
-                //MENU DO USUARIO CONVIDADO LOGADO
-                switch (o) {
-
-                    case 1 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(RecadoDAO.class, MenuInicial.logou, this.userLogado);
-                        break;
-                    }
-                    case 2 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(PresenteDAO.class, MenuInicial.logou, this.userLogado);
-                        break;
-                    }
-                    case 3 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(PessoaDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 4 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(UserDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 5 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(FornDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 6 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(EventoDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 7 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(CerimonialDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 8 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(IgrejaDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 9 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(CartorioDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 10 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(ConvDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 11 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(ConvFamDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 12 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(PagDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 13 -> {
-                        Menu_CRUD menu = new Menu_CRUD();
-                        menu.exibir(RelatorioDAO.class, MenuInicial.logou, this.userLogado);
-
-                        break;
-                    }
-                    case 14 -> {
-                        TelaInicial menu = new TelaInicial();
-                        menu.exibir();
-                        break;
-                    }
-
-                    default -> {
-                        TelaInicial menu = new TelaInicial();
-                        menu.exibir();
-                        break;
-                    }
-                }
+                //MENU DA PESSOA NÃO LOGADA
+                criarMenuCRUD(this.listaClassesDAO[o - 1]);
             }
-        } else {
-            //MENU DA PESSOA NÃO LOGADA
-            switch (o) {
-
-                case 1 -> {
-                    Menu_CRUD menu = new Menu_CRUD();
-                    menu.exibir(RecadoDAO.class, MenuInicial.logou, null);
-                    break;
-                }
-                case 2 -> {
-                    Menu_CRUD menu = new Menu_CRUD();
-                    menu.exibir(PresenteDAO.class, MenuInicial.logou,null);
-                    break;
-                }
-                case 3 -> {
-                    TelaInicial menu = new TelaInicial();
-                    menu.exibir();
-                    break;
-                }
-                case 4 -> {
-                    TelaInicial menu = new TelaInicial();
-                    menu.exibir();
-                    break;
-                }
-                default -> {
-                    TelaInicial menu = new TelaInicial();
-                    menu.exibir();
-                    break;
-                }
-            }
-
         }
 
     }
 
+    public void criarMenuCRUD(Class<?> classe) {
+        Menu_CRUD menu = new Menu_CRUD();
+        menu.exibir(classe, MenuInicial.logou, this.userLogado);
+    }
 }

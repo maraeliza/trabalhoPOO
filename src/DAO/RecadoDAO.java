@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import CLASSES.Pessoa;
 import CLASSES.Recado;
 import GUI.Util;
 
@@ -27,11 +28,12 @@ public class RecadoDAO {
     public static Class<Recado> getClasse(){
         return Recado.class;
     }
-    public int setNItens() {
+    
+    public static int setNItens() {
         return nItens;
     }
 
-    public static int getItens() {
+    public static int getNItens() {
         return nItens;
     }
 
@@ -68,10 +70,13 @@ public class RecadoDAO {
         return texto;
     }
 
-    public static void cadastrar(String nome){
+    public static void cadastrar(String coment, Pessoa pessoa){
         System.out.println("ADICIONANDO RECADO");
         Recado recado = new Recado();
-        recado.criar(null,nome);
+        Object[] vetor = new Object[2];
+        vetor[0] = pessoa;
+        vetor[1] = coment;
+        recado.criar(vetor);
         if(RecadoDAO.addVetor(recado) == true){
             System.out.println("RECADO ADICIONADO COM SUCESSO!");
         }else{
@@ -125,7 +130,7 @@ public class RecadoDAO {
   
     public static boolean find(int id) {
         for (int i = 0; i < vetor.length; i++) {
-            if (vetor[i] != null && vetor[i].id == id) {
+            if (vetor[i] != null && vetor[i].getId() == id) {
                 return true;
             }
         }
@@ -134,7 +139,7 @@ public class RecadoDAO {
 
     public static Recado getItemByID(int id) {
         for (int i = 0; i <vetor.length; i++) {
-            if (vetor[i] != null && vetor[i].id == id) {
+            if (vetor[i] != null && vetor[i].getId() == id) {
                 return vetor[i];
             }
         }
@@ -142,7 +147,7 @@ public class RecadoDAO {
     }
      public static boolean delItemByID(int id) {
         for (int i = 0; i <vetor.length; i++) {
-            if (vetor[i] != null && vetor[i].id == id) {
+            if (vetor[i] != null && vetor[i].getId() == id) {
                 vetor[i] = null;
                 return true;
             }

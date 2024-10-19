@@ -5,7 +5,7 @@
 package GUI;
 
 import javax.swing.JOptionPane;
-import DAO.UserDAO;
+import DAO.UsuarioDAO;
 import CLASSES.Usuario;
 /**
  *
@@ -27,8 +27,8 @@ public class MenuLogin {
               System.out.println("Senha digitada: "+result);
               if(result != null && result.length() > 3){
                   System.out.println("autenticando usuario: "+user);
-                  if(UserDAO.autentica(user, result) == true){
-                        Usuario usuario = UserDAO.getUser(user);
+                  if(UsuarioDAO.autentica(user, result) == true){
+                        Usuario usuario = UsuarioDAO.getUser(user);
                         MenuInicial menu = new MenuInicial();
                         menu.exibir(true, usuario);
                   }else{
