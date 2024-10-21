@@ -8,39 +8,109 @@ package CLASSES;
  *
  * @author Jussie
  */
+import java.time.LocalDate;
+
 public class Cerimonial {
-    public  int id;
-    String noiva;
-    String noivo;
-    String padrinhos;
-    String madrinhas;
-    String local;
-    int nrPadrinhos;
-    int nrMadrinhas;
-    int qtdConvidados;
-    public static int totalCerimonial;
+
+    public int id;
+    private String nome;
+    private String telefone;
     
-    public void criar(String noiva, String noivo, String padrinhos, String madrinhas, String local, int nrPadrinhos, int nrMadrinhas, int qtdConvidados){
-        this.id = totalCerimonial++;
-        this.noiva = noiva;
-        this.noivo = noivo;
-        this.padrinhos = padrinhos;
-        this.madrinhas = madrinhas;
-        this.local = local;
-        this.nrPadrinhos = nrPadrinhos;
-        this.nrMadrinhas = nrMadrinhas;
-        this.qtdConvidados = qtdConvidados;
+    private LocalDate dataCriacao;
+    private LocalDate dataModificacao;
+
+    public static int totalCerimoniais;
+
+    // Getters e Setters
+    public int getId() {
+        return this.id;
     }
-    public String ler(){
-        String dados = "Nome da noiva: " + this.noiva;
-        dados += "Nome do noivo: " + this.noivo;
-        dados += "Nome dos padrinhos: " + this.padrinhos;
-        dados += "Nome das madrinhas: " + this.madrinhas;
-        dados += "Local: " + this.local;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static int getTotalCerimoniais() {
+        return totalCerimoniais;
+    }
+
+    public static void setTotalCerimoniais(int total) {
+        totalCerimoniais = total;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+        this.dataModificacao = LocalDate.now();
+    }
+
+    public String getTelefone() {
+        return this.telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+        this.dataModificacao = LocalDate.now();
+    }
+
+    public LocalDate getDataCriacao() {
+        return this.dataCriacao;
+    }
+
+    public LocalDate getDataModificacao() {
+        return this.dataModificacao;
+    }
+
+    // Método para criar um novo cerimonial
+    public void criar(String nome, String telefone) {
+        this.id = ++totalCerimoniais;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = null;
+    }
+
+    // Método para atualizar cerimonial
+    public void update(String nome, String telefone) {
+        boolean alterou = false;
+
+        if (nome != null && !nome.isEmpty()) {
+            this.nome = nome;
+            alterou = true;
+        }
+
+        if (telefone != null && !telefone.isEmpty()) {
+            this.telefone = telefone;
+            alterou = true;
+        }
+
+        if (alterou) {
+            this.atualizarDataModificacao();
+        }
+    }
+
+    // Método para atualizar a data de modificação
+    private void atualizarDataModificacao() {
+        this.dataModificacao = LocalDate.now();
+    }
+
+    // Método para deletar cerimonial
+    private void deletar() {
+        --totalCerimoniais;
+    }
+
+    // Método para ler os dados do cerimonial
+    public String ler() {
+        String dados = "\n\nID: " + this.id;
+        dados += "\n Nome: " + this.nome;
+        dados += "\n Telefone: " + this.telefone;
+        dados += "\n Data de criação: " + this.dataCriacao;
+        dados += "\n Data de modificação: " + (this.dataModificacao != null ? this.dataModificacao.toString() : "N/A");
+        
         return dados;
     }
-    
-    private void deletar(){
-        
-    }
 }
+

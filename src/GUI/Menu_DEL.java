@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DAO.DAO;
 import java.lang.reflect.Method;
 import javax.swing.JOptionPane;
 
@@ -18,36 +19,35 @@ public class Menu_DEL {
     private String vetor[];
     private String valores[];
     private int nColetados;
+    private DAO dao;
+    private int idClasse;
+    public void exibir(DAO dao, int idClasse) {
+        this.dao = dao;
 
-    public void exibir(Class<?> clazzDAO, String clazzName) {
-
-        this.nomeClasse = clazzName;
+        this.nomeClasse = this.dao.getNameClasseById(idClasse);;
 
         try {
             System.out.println("NOME DA CLASSE: " + this.nomeClasse);
-            String texto = this.getDados(clazzDAO);
-            
+            String texto = dao.getTexto(idClasse);
+
             texto += "\n\nDigite o ID para excluir: ";
             String res = JOptionPane.showInputDialog(null, texto, "0");
-            if (res != null && res.length()  > 0 ) {
+            if (res != null && res.length() > 0) {
                 int id = Util.stringToInt(res);
                 System.out.println("TEXTO: " + texto);
-                try {
-                    Method metodo = clazzDAO.getMethod("delItemByID", int.class);
-
+               
                     // Invoca o método estático (passando null porque não precisamos de uma instância)
-                    boolean sucess = (boolean) metodo.invoke(null, id);
+                    boolean sucess = dao.delItemByID(this.idClasse, id);
 
                     if (sucess) {
                         JOptionPane.showMessageDialog(null, "Elemento " + id + " excluído com sucesso!", "DELETADO", JOptionPane.INFORMATION_MESSAGE);
-                        this.exibir(clazzDAO, clazzName);
+                        this.exibir(this.dao, this.idClasse);
 
                     } else {
                         System.out.println("Nao foi possivel fazer a exclusao");
+                        Util.mostrarErro("Não foi possível fazer a exclusão");
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+              
             }
 
         } catch (Exception e) {
@@ -68,7 +68,6 @@ public class Menu_DEL {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
 
         return this.texto;
     }

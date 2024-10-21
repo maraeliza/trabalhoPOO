@@ -20,10 +20,10 @@ public class Pagamento {
     LocalDate dataCriacao;
     LocalDate dataModificacao;
    
-     public static int totalPagamento;
+     public static int total;
     
     public void criar(int id, Pessoa pessoa,Fornecedor fornecedor, String descricao, String valor, String parcela){
-        this.id = totalPagamento++;
+        this.id = ++total;
         this.pessoa = pessoa;
         this.descricao = descricao;
         this.fornecedor = fornecedor;
@@ -35,7 +35,7 @@ public class Pagamento {
     }
     public String ler(){
         String dados = "\nMural de Recados "+this.id;
-        dados+= "\nNome: "+this.pessoa.nome;
+        dados+= "\nNome: "+this.pessoa.getNome();
         dados+= "\nDescricao: "+this.descricao;
         
         return dados;
@@ -49,4 +49,86 @@ public class Pagamento {
         
         
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public String getParcela() {
+        return parcela;
+    }
+
+    public void setParcela(String parcela) {
+        this.parcela = parcela;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDate getDataModificacao() {
+        return dataModificacao;
+    }
+
+    public void setDataModificacao(LocalDate dataModificacao) {
+        this.dataModificacao = dataModificacao;
+    }
+
+    public static int getTotal() {
+        return total;
+    }
+
+    public static void setTotal(int total) {
+        Pagamento.total = total;
+    }
+
+    
 }

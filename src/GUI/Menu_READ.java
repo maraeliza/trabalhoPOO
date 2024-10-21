@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DAO.DAO;
 import java.lang.reflect.Method;
 
 import javax.swing.JOptionPane;
@@ -19,17 +20,21 @@ public class Menu_READ {
     private String vetor[];
     private String valores[];
     private int nColetados;
+    private DAO dao;
+    private int idClasse;
 
-    public void exibir(Class<?> clazzDAO, String clazzName) {
+    public void exibir(DAO dao, int idClasse) {
+        this.idClasse = idClasse;
+        this.dao = dao;
         try {
-            Method metodo = clazzDAO.getMethod("getItens");
-            int n = (int) metodo.invoke(null);
+            
+            int n = dao.getTotalClasse(idClasse);
             if (n > 0) {
-                this.nomeClasse = clazzName;
+                this.nomeClasse = this.dao.getNameClasseById(idClasse);
 
                 try {
                     System.out.println("NOME DA CLASSE: " + this.nomeClasse);
-                    String texto = this.getDados(clazzDAO);
+                    String texto = dao.getTexto(idClasse);
                     int res = JOptionPane.showConfirmDialog(null, texto, "RELATÓRIO DE " + this.nomeClasse.toUpperCase(), JOptionPane.OK_CANCEL_OPTION);
 
                     System.out.println("TEXTO: " + texto);
@@ -46,23 +51,7 @@ public class Menu_READ {
 
     }
 
-    public String getDados(Class<?> clazzDAO) {
-        this.texto = "";
-
-        try {
-            Method metodo = clazzDAO.getMethod("getTexto");
-
-            // Invoca o método estático (passando null porque não precisamos de uma instância)
-            this.texto = (String) metodo.invoke(null);
-
-            System.out.println(this.texto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        montarPainel();
-
-        return this.texto;
-    }
+   
 
     public void montarPainel() {
 

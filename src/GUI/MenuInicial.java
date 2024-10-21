@@ -4,12 +4,11 @@
  */
 package GUI;
 
+import DAO.*;
 
-import DAO.DAOPAI;
-import DAO.RecadoDAO;
-import DAO.PresenteDAO;
 import javax.swing.JOptionPane;
 import javax.swing.*;
+import CLASSES.Usuario;
 
 /**
  *
@@ -20,76 +19,149 @@ public class MenuInicial {
     private String texto;
     private String op;
     private static boolean logou;
-    private DAOPAI dao1;
-    private DAOPAI dao2;
-    
-    public MenuInicial(DAOPAI dao1, DAOPAI dao2){
+    private String opcoes[];
+    private Usuario userLogado;
+    private String listaNomeClasses[] = new String[20];
+    private Class<?>[] listaClassesDAO;
+    private int nOps;
+    private DAO dao;
+
+    public MenuInicial() {
         MenuInicial.logou = false;
-        this.dao1 = dao1;
-        this.dao2 = dao2;
+        setLista();
+
     }
+
+    private void setLista() {
+        String listaClasses[] = new String[20];
+        listaClasses[0] = "RECADOS";
+        listaClasses[1] = "PRESENTES";
+        listaClasses[2] = "PESSOA";
+        listaClasses[3] = "USUÁRIOS";
+        listaClasses[4] = "FORNECEDOR";
+        listaClasses[5] = "EVENTO";
+
+        listaClasses[6] = "CERIMONIAL";
+        listaClasses[7] = "IGREJA";
+        listaClasses[8] = "CARTÓRIO";
+        listaClasses[9] = "CONVIDADO INDIVIDUAL";
+        listaClasses[10] = "CONVIDADO FAMÍLIA";
+        listaClasses[11] = "PAGAMENTO";
+        listaClasses[12] = "RELATÓRIOS";
+
+        this.listaNomeClasses = listaClasses;
+        this.listaClassesDAO = new Class<?>[]{
+            RecadoDAO.class, // RECADOS
+            PresenteDAO.class, // PRESENTES
+            PessoaDAO.class, // PESSOA
+            UsuarioDAO.class, // USUÁRIOS
+            FornecedorDAO.class, // FORNECEDOR
+            EventoDAO.class, // EVENTO
+            CerimonialDAO.class, // CERIMONIAL
+            IgrejaDAO.class, // IGREJA
+            CartorioDAO.class, // CARTÓRIO
+            Convidado_IndividualDAO.class, // CONVIDADO INDIVIDUAL
+            Convidado_FamiliaDAO.class, // CONVIDADO FAMÍLIA
+            PagamentoDAO.class, // PAGAMENTO
+            RelatorioDAO.class // RELATÓRIOS
+        };
+
+    }
+
+    private String[] getLista() {
+        return this.listaNomeClasses;
+    }
+
     private void definirTexto(String noivo, String noiva) {
-        this.texto = "\n                    BEM VINDO               ";
+        if (this.userLogado != null) {
+            this.texto = "\n                  BEM VINDO " + this.userLogado.getNome().toUpperCase() + "           ";
+
+        } else {
+            this.texto = "\n                    BEM VINDO            ";
+
+        }
+
         this.texto += "\n\nNOIVOS";
         this.texto += "\n" + noivo + " ❤ " + noiva + "  \n";
         this.texto += "\n\nEscolha a opção a seguir ";
-        this.texto += "\n1.LOGIN";
-        this.texto += "\n2.RECADOS";
-        this.texto += "\n3.PRESENTES";
-        this.texto += "\n4.SAIR";
+
+        this.texto += this.definirOpcoes();
+
         this.texto += "\n\nDigite aqui o número da sua opção: ";
 
     }
 
-    public void exibir( ) {
-        int o = -1;  // Valor inicial inválido para garantir que o loop execute pelo menos uma vez
-           do {
-               this.definirTexto("João", "Maria");
+    private String definirOpcoes() {
+        String Opcoes = "";
+        this.nOps = 1;
+        System.out.println("definindo opcoes");
+        if (this.userLogado != null && this.userLogado.getTipo() == 1) {
+            System.out.println("Usuario adm");
+            for (int n = 0; n < this.listaNomeClasses.length; n++) {
+                if (this.listaNomeClasses[n] != null) {
+                    Opcoes += "\n" + Util.intToString(this.nOps) + ". " + this.listaNomeClasses[n];
+                    this.nOps++;
+                }
 
-               this.op = JOptionPane.showInputDialog(null, this.texto, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
-               System.out.println(this.op);
-               // Verifica se a entrada não é nula e converte a string para int
-               if (this.op != null) {
-                   o = Util.stringToInt(this.op);
-               } else {
-                   // Se for null, o usuário fechou a janela ou clicou em "Cancelar"
-                   o = 4; // Define para "Sair"
-               }
+            }
 
-               // Chama o método de lidar com a escolha
-               this.lidarEscolha(o);
-           } while (o != 0 && o != 4); // O loop continuará até o usuário escolher "Sair" ou "0"
+        } else {
+            System.out.println("Usuario NÃO adm");
+            for (int n = 0; n < 2; n++) {
+                if (this.listaNomeClasses[n] != null) {
+                    Opcoes += "\n" + Util.intToString(this.nOps) + ". " + this.listaNomeClasses[n];
+                    this.nOps++;
+                }
+            }
+        }
+        Opcoes += "\n" + Util.intToString(this.nOps) + ". SAIR";
+        return Opcoes;
+    }
+
+    public void exibir(DAO dao, boolean logou, Usuario userLogou) {
+        this.dao = dao;
+        this.userLogado = userLogou;
+        int o = -1;
+        do {
+            this.definirTexto("João", "Maria");
+
+            this.op = JOptionPane.showInputDialog(null, this.texto, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
+            System.out.println(this.op);
+
+            if (this.op != null) {
+                o = Util.stringToInt(this.op);
+                this.lidarEscolha(o);
+            } else {
+                TelaInicial menu = new TelaInicial();
+                op = menu.exibir(this.dao);
+            }
+        } while (o != 0 && this.op != null);
 
     }
 
     private void lidarEscolha(int o) {
-        switch (o) {
-
-            case 1 -> {
-                MenuLogin menu = new MenuLogin();
-                menu.exibir();
-                break;
+        if (o >= this.nOps) {
+            TelaInicial menu = new TelaInicial();
+            op = menu.exibir(this.dao);
+        } else {
+            if (this.userLogado != null) {
+                if (this.userLogado.getTipo() == 1) {
+                    //MENU DO USUARIO ADM
+                    criarMenuCRUD(this.dao, o-1);
+                } else {
+                    //MENU DO USUARIO CONVIDADO LOGADO
+                    criarMenuCRUD(this.dao, o-1);
+                }
+            } else {
+                //MENU DA PESSOA NÃO LOGADA
+                criarMenuCRUD(this.dao, o-1);
             }
-            case 2 -> {
-                Menu_CRUD menu = new Menu_CRUD();
-                menu.exibir(this.dao2,"Recado", MenuInicial.logou);
-                break;
-            }
-            case 3 -> {
-                Menu_CRUD menu = new Menu_CRUD();
-                menu.exibir(this.dao1, "Presente", MenuInicial.logou);
-                break;
-            }
-            case 4 -> {
-                break;
-            }
-            default -> {
-                break;
-            }
-
         }
-       
 
     }
 
+    public void criarMenuCRUD(DAO dao, int idClasse) {
+        Menu_CRUD menu = new Menu_CRUD();
+        menu.exibir(this.dao, idClasse, MenuInicial.logou, this.userLogado);
+    }
 }

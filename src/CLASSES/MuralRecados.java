@@ -30,7 +30,7 @@ public class MuralRecados {
     }
     public String ler(){
         String dados = "\nMural de Recados "+this.id;
-        dados+= "\nNome: "+this.pessoa.nome;
+        dados+= "\nNome: "+this.pessoa.getNome();
         dados+= "\nComentario: "+this.comentario;
         
         return dados;

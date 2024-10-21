@@ -4,14 +4,10 @@
  */
 package GUI;
 
-import java.lang.reflect.Method;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
+import CLASSES.Usuario;
+import DAO.*;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import DAO.PresenteDAO;
-import DAO.RecadoDAO;
+
 /**
  *
  * @author Mara
@@ -21,23 +17,22 @@ public class Menu_CREATE {
     private String nomeClasse;
     private String texto;
     private String vetor[];
-    private String valores[];
+    private Object valores[];
     private int nColetados;
-    
+    private Usuario userLogado;
+    private DAO dao;
+    private int idClasse;
 
-    public void exibir(Class<?> clazzDAO, String clazzName, boolean logou) {
+    public void exibir(DAO dao, int idClasse, Usuario user) {
+        this.dao = dao;
         this.vetor = new String[10];
-        
-        this.nomeClasse = clazzName;
-        if(this.nomeClasse == "Recado" && logou == false){
-            Util.mostrarErro("Logue para adicionar recados!");
-            return;
-        }else{
-            try {
-                this.getTexto();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }            
+        this.nomeClasse = this.dao.getNameClasseById(idClasse);
+        this.userLogado = user;
+
+        try {
+            this.getTexto();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -45,89 +40,53 @@ public class Menu_CREATE {
     public String getTexto() {
         this.texto = "";
         this.cleanVetor();
+        System.out.println("MENU DA CLASSE " + this.nomeClasse);
+
         switch (this.nomeClasse) {
 
-            case "Presente" -> {
+            case "PRESENTE" -> {
                 this.add("Nome: ");
                 this.add("Tipo: ");
-                
+
                 break;
             }
-            case "Recado" -> {
+            case "RECADOS" -> {
                 this.add("Comentário: ");
-                
-                
+
                 break;
             }
+            case "PESSOA" -> {
+                this.add("Nome: ");
+                this.add("Telefone: ");
+                this.add("Tipo: ");
+                this.add("Data de Nascimento: ");
+                break;
+            }
+
         }
-        
+
         montarPainel();
         return "";
     }
 
     public void montarPainel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        JLabel titulo = new JLabel("CADASTRAR " + this.nomeClasse.toUpperCase());
-        panel.add(titulo);
-        JTextField[] campos = new JTextField[this.vetor.length];
-        this.valores = new String[10];
 
+        String conteudo = "\nCADASTRAR " + this.nomeClasse.toUpperCase();
+        conteudo += "\n";
+        this.valores = new Object[10];
+        String result = "";
         this.nColetados = 0;
         for (int i = 0; i < this.vetor.length; i++) {
-            if (this.vetor[i] != null) {
-                panel.add(new JLabel("\n" + this.vetor[i]));
-                campos[i] = new JTextField(10);
-                panel.add(campos[i]);
+            if (this.vetor[i] != null && result != null) {
+                conteudo = "\nCADASTRAR " + this.nomeClasse.toUpperCase();
+                conteudo += "\n\nINSIRA " + this.vetor[i].toUpperCase();
+                result = JOptionPane.showInputDialog(null, conteudo, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
+                this.valores[this.nColetados] = result;
+                System.out.println(this.valores[this.nColetados]);
+                this.nColetados++;
             }
         }
-        int result = JOptionPane.showConfirmDialog(null, panel, "UaiCasórioPro ", JOptionPane.OK_CANCEL_OPTION);;
-
-        if (result == JOptionPane.OK_OPTION) {
-            for (int i = 0; i < campos.length; i++) {
-                if (campos[i] != null) {
-                    String valor = campos[i].getText();
-                    this.valores[this.nColetados] = valor; 
-                    System.out.println(this.vetor[i] + ": " + valor); // Exibe o valor
-                    this.nColetados++;
-                }
-
-            }
-
-            switch (this.nomeClasse) {
-                case "Presente" -> {
-                    System.out.println("add valores");
-                    if (this.valores != null && this.nColetados < 2 && (this.valores[0] == "" || this.valores[1] == "")) {
-                        Util.mostrarErro("Preencha todos os valores!");
-                    } else if (this.valores != null) {
-                        System.out.println("VALORES NÃO NULOS ADD");
-                        System.out.println(this.valores[0] + " " + this.valores[1]);
-
-                        PresenteDAO.cadastrar(this.valores[0], this.valores[1]);
-                    }
-                }
-                case "Recado" -> {
-                    System.out.println("add valores");
-                    if (this.valores != null && this.nColetados < 1 && (this.valores[0] == "")) {
-                        Util.mostrarErro("Preencha todos os valores!");
-                    } else if (this.valores != null) {
-                        System.out.println("VALORES NÃO NULOS ADD");
-                        System.out.println(this.valores[0]);
-                        RecadoDAO.cadastrar(this.valores[0]);
-              
-                        
-                    }
-                }
-            }
-
-        } else {
-
-            System.out.println("Cancelada!");
-        }
-
-    }
-
-    public void cadastrar(int n) {
+        this.dao.cadastrar(this.idClasse, this.valores, this.userLogado);
 
     }
 

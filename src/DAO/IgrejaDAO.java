@@ -22,6 +22,7 @@ public class IgrejaDAO {
         
         this.classe = Igreja.class;
         nItens = 0;
+        this.setVetor();
     }
     public static Class<Igreja> getClasse(){
         return Igreja.class;
