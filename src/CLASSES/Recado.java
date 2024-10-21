@@ -142,7 +142,7 @@ public class Recado implements ClasseInterface {
 
     public String ler() {
         String dados = "";
-        dados = "\n\nID: " + this.id;
+        dados = "\nID: " + this.id;
         dados += "\n   Comentário: " + this.comentario;
         if (this.pessoa != null && this.pessoa.getNome().length() > 1) {
             dados += "\n   Autor: " + this.pessoa.getNome();

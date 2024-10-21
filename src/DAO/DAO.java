@@ -298,9 +298,9 @@ public class DAO {
             ClasseInterface objeto = (ClasseInterface) classe.getDeclaredConstructor().newInstance();
 
             // Chama o método criar com as informações fornecidas
-            if (idClasse == 0) {
-                objeto.criar(userLogado, infos);
-            }
+           
+            objeto.criar(userLogado, infos);
+            
 
             // Adiciona o objeto ao vetor correspondente
             boolean adicionado = this.addVetor(idClasse, objeto);

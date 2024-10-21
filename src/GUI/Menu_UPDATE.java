@@ -69,17 +69,9 @@ public class Menu_UPDATE {
                 break;
             }
         }
-        try {
-            Method metodo = this.classe.getMethod("getTexto");
+        this.texto = this.dao.getTexto(this.idClasse);
 
-            // Invoca o método estático (passando null porque não precisamos de uma instância)
-            this.texto = (String) metodo.invoke(null);
-            System.out.println(this.texto);
-
-            montarPainel(texto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        montarPainel(texto);
 
         return "";
     }
@@ -97,8 +89,9 @@ public class Menu_UPDATE {
             int idInserido = Util.stringToInt(result);
             this.valores[0] = result;
             try {
-                Method metodo = this.classe.getMethod("find", int.class);
-                boolean existe = (boolean) metodo.invoke(null, idInserido);
+                
+                boolean existe = this.dao.find(this.idClasse, idInserido);
+                
 
                 if (existe) {
                     this.nColetados = 0;
@@ -112,53 +105,12 @@ public class Menu_UPDATE {
 
                         }
                     }
-
-                    switch (this.nomeClasse) {
-                        case "Presente" -> {
-                            System.out.println("add valores");
-                            if (this.valores != null && this.nColetados < 3 && (this.valores[0] == "" || this.valores[1] == "")) {
-                                Util.mostrarErro("Preencha todos os valores!");
-                            } else if (this.valores != null) {
-                                System.out.println("VALORES NÃO NULOS ADD");
-                                System.out.println("ID " + this.valores[0] + " " + this.valores[1] + this.valores[2]);
-
-                                PresenteDAO.atualizar(this.valores[0], this.valores[1], this.valores[2]);
-                            }
-                        }
-                        case "Recado" -> {
-                            System.out.println("add valores");
-                            if (this.valores != null && this.nColetados < 2 && (this.valores[0] == "" || this.valores[1] == "")) {
-                                Util.mostrarErro("Preencha todos os valores!");
-                            } else if (this.valores != null) {
-                                System.out.println("VALORES NÃO NULOS ADD");
-                                System.out.println("ID " + this.valores[0] + " " + this.valores[1]);
-
-                                RecadoDAO.atualizar(this.valores[0], this.valores[1]);
-                            }
-                        }
-                        case "Pessoa" -> {
-                            System.out.println("add valores");
-                            if (this.valores != null && this.nColetados < 2 && (this.valores[0] == "" || this.valores[1] == "")) {
-                                Util.mostrarErro("Preencha todos os valores!");
-                            } else if (this.valores != null) {
-                                System.out.println("VALORES NÃO NULOS ADD");
-                                System.out.println("ID " + this.valores[0] + " " + this.valores[1]);
-
-                                PessoaDAO.atualizar(this.valores);
-                            }
-                        }
-                    }                   
+                    this.dao.atualizar(this.idClasse, this.valores);
                     this.exibir(this.dao, this.idClasse);
                 } else {
                     Util.mostrarErro("Elemento de id " + result + " não encontrado!");
                 }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
+            }catch (Exception e) {
                 Util.mostrarErro("Digite um ID válido!");
             }
         } else {
