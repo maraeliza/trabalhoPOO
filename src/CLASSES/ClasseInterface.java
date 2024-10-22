@@ -25,4 +25,7 @@ public interface ClasseInterface {
     LocalDate getDataModificacao();
         
     void atualizarDataModificacao();
+    
+    
+           
 }

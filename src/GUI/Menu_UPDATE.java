@@ -47,30 +47,14 @@ public class Menu_UPDATE {
     public String getTexto() {
         this.texto = "";
         this.cleanVetor();
-        this.add("ID: ");
-        switch (this.nomeClasse) {
-
-            case "Presente" -> {
-                this.add("Nome: ");
-                this.add("Tipo: ");
-
-                break;
-            }
-            case "Recado" -> {
-                this.add("Comentário: ");
-
-                break;
-            }
-            case "Pessoa" -> {
-                this.add("Nome: ");
-                this.add("Telefone: ");
-                this.add("Tipo: ");
-                this.add("Data de Nascimento: ");
-                break;
-            }
-        }
         this.texto = this.dao.getTexto(this.idClasse);
-
+        Class<?> classe = this.dao.getClasseByID(this.idClasse);    
+        try{
+            java.lang.reflect.Method metodo = classe.getMethod("getCampos");
+            this.vetor = (String[]) metodo.invoke(null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         montarPainel(texto);
 
         return "";
@@ -123,10 +107,10 @@ public class Menu_UPDATE {
 
     }
 
-    public boolean add(String p) {
+    public boolean add(String atributo) {
         for (int i = 0; i < this.vetor.length; i++) {
             if (this.vetor[i] == null) {
-                this.vetor[i] = p;
+                this.vetor[i] = atributo;
                 return true;
             }
         }

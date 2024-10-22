@@ -18,13 +18,23 @@ public class Pessoa implements ClasseInterface {
 
     private int id;
     private String nome;
-    String telefone;
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;
-    LocalDate nascimento;
-    
+    private String telefone;
+    private LocalDate dataCriacao;
+    private LocalDate dataModificacao;
+    private LocalDate nascimento;
+   
     public static int total;
-
+    
+    public static String[] getCampos(){
+        String[] campos = new String[5];
+        campos[0] = "ID: ";
+        campos[1] = "NOME: ";
+        campos[2] = "TELEFONE: ";
+        campos[3] = "TIPO: ";
+        campos[4] = "DATA DE NASCIMENTO: ";
+        return campos;
+    }
+    
     public int getId() {
         return this.id;
     }

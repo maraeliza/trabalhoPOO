@@ -21,7 +21,14 @@ public class Recado implements ClasseInterface {
     private LocalDate dataModificacao;
 
     public static int total;
-
+    
+    public static String[] getCampos(){
+        String[] campos = new String[2];
+        campos[0] = "ID: ";
+        campos[1] = "Comentário: ";
+        return campos;
+    }
+    
     public int getId() {
         return this.id;
     }
@@ -151,4 +158,6 @@ public class Recado implements ClasseInterface {
 
         return dados;
     }
+    
+   
 }

@@ -21,7 +21,15 @@ public class Presente implements ClasseInterface {
     private LocalDate dataModificacao;
     private boolean escolhido;
     public static int total;
-
+    
+    public static String[] getCampos(){
+        String[] campos = new String[3];
+        campos[0] = "ID: ";
+        campos[1] = "NOME: ";
+        campos[2] = "TIPO: ";
+        
+        return campos;
+    }
     public int getId() {
         return this.id;
     }

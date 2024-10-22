@@ -286,7 +286,10 @@ public class DAO {
 
         return texto;
     }
-
+    public Class<?> getClasseByID(int idClasse){
+        return this.listaClasses[idClasse];
+    }
+    
     public void cadastrar(int idClasse, Object infos[], Usuario userLogado) {
         System.out.println("ADICIONANDO NO VETOR");
 
