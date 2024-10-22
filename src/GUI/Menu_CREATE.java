@@ -28,7 +28,7 @@ public class Menu_CREATE {
         this.vetor = new String[10];
         this.nomeClasse = this.dao.getNameClasseById(idClasse);
         this.userLogado = user;
-
+        this.idClasse = idClasse;
         try {
             this.getTexto();
         } catch (Exception e) {

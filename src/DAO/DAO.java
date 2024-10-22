@@ -246,6 +246,7 @@ public class DAO {
     }
 
     public Object[] getVetorById(int id) {
+        System.out.println("pegando o vetor de id "+id);
         return this.todosOsVetores[id];
     }
 
@@ -266,6 +267,8 @@ public class DAO {
     }
 
     public String getTexto(int idClasse) {
+        System.out.println("LENDO CLASSE DE ID "+idClasse);
+        System.out.println("");
         String texto = this.listaNomesClasses[idClasse] + " JÁ CADASTRADOS";
         texto += "\nTotal: " + this.getTotalClasse(idClasse) + " itens\n\n";
         if (this.getTotalClasse(idClasse) > 0) {
@@ -274,8 +277,11 @@ public class DAO {
                 if (vetor[i] != null) {
                     System.out.println("ITEM NÃO NULO");
                     if (vetor[i] instanceof ClasseInterface) {
+                       
                         int id = ((ClasseInterface) vetor[i]).getId();
+                         System.out.println("LENDO ITEM DE ID "+id);
                         texto += ((ClasseInterface) vetor[i]).ler();
+                         System.out.println("LENDO TEXTO  ");
                     }
 
                 }
@@ -291,18 +297,18 @@ public class DAO {
     }
     
     public void cadastrar(int idClasse, Object infos[], Usuario userLogado) {
-        System.out.println("ADICIONANDO NO VETOR");
-
+        System.out.println("ADICIONANDO NO VETOR DA CLASSE DE ID "+idClasse);
+        System.out.println("CLASSE NOME: "+this.getNameClasseById(idClasse));
         try {
             // Obtém a classe correspondente ao idClasse
             Class<?> classe = this.listaClasses[idClasse];
 
             // Cria uma nova instância da classe
             ClasseInterface objeto = (ClasseInterface) classe.getDeclaredConstructor().newInstance();
-
+             System.out.println("CRIANDO O OBJETO");
             // Chama o método criar com as informações fornecidas
             objeto.criar(userLogado, infos);
-
+            System.out.println("add no vetor");
             // Adiciona o objeto ao vetor correspondente
             boolean adicionado = this.addVetor(idClasse, objeto);
 
@@ -320,17 +326,11 @@ public class DAO {
     public void atualizar(int idClasse, String infos[]) {
         int id = Util.stringToInt(infos[0]);
         System.out.println("ENCONTRANDO ....");
-
-        // Verifica se os campos estão preenchidos
-        // Verifica se o item existe no vetor correspondente
         if (this.find(idClasse, id)) {
             System.out.println("ITEM ENCONTRADO!");
-
-            // Obtém o item a partir do ID
             ClasseInterface item = this.getItemByID(idClasse, id);
             if (item != null) {
-                // Chama o método de atualização do item
-                item.update(infos); // Presumindo que a interface ClasseInterface possui o método update
+                item.update(infos); 
 
                 System.out.println("ATUALIZADO COM SUCESSO!");
                 Util.mostrarMSG("ATUALIZADO COM SUCESSO!");
@@ -397,13 +397,20 @@ public class DAO {
     }
 
     public boolean delItemByID(int idClasse, int id) {
+        System.out.println("DELETANDO ITEM "+id+" DA CLASSE DE ID "+idClasse);
+        System.out.println("NOME DA CLASSE "+this.getNameClasseById(idClasse));
         Object[] vetor = this.getVetorById(idClasse);
+        System.out.println("vetor pego");
         for (int i = 0; i < vetor.length; i++) {
             // Verifica se o item não é nulo e se implementa a interface
             if (vetor[i] != null && vetor[i] instanceof ClasseInterface) {
+                System.out.println("verificado!");
                 ClasseInterface item = (ClasseInterface) vetor[i]; // Faz o cast
                 if (item.getId() == id) {
+                    System.out.println("elemento encontrado");
                     vetor[i] = null; // Remove o item
+                    System.out.println("elemento apagado");
+                    
                     return true;
                 }
             }

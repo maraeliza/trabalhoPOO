@@ -23,21 +23,21 @@ public class Menu_DEL {
     private int idClasse;
     public void exibir(DAO dao, int idClasse) {
         this.dao = dao;
-
+        this.idClasse = idClasse;
         this.nomeClasse = this.dao.getNameClasseById(idClasse);;
 
         try {
             System.out.println("NOME DA CLASSE: " + this.nomeClasse);
-            String texto = dao.getTexto(idClasse);
+            String texto = this.dao.getTexto(idClasse);
 
             texto += "\n\nDigite o ID para excluir: ";
             String res = JOptionPane.showInputDialog(null, texto, "0");
             if (res != null && res.length() > 0) {
-                int id = Util.stringToInt(res);
-                System.out.println("TEXTO: " + texto);
+                    int id = Util.stringToInt(res);
+                    System.out.println("TEXTO: " + texto);
                
                     // Invoca o método estático (passando null porque não precisamos de uma instância)
-                    boolean sucess = dao.delItemByID(this.idClasse, id);
+                    boolean sucess = this.dao.delItemByID(this.idClasse, id);
 
                     if (sucess) {
                         JOptionPane.showMessageDialog(null, "Elemento " + id + " excluído com sucesso!", "DELETADO", JOptionPane.INFORMATION_MESSAGE);

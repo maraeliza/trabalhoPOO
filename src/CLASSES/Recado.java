@@ -84,17 +84,19 @@ public class Recado implements ClasseInterface {
         }
     }
 
-    public void criar(Usuario user, Object vetor[]) {
-
+    public boolean criar(Usuario user, Object vetor[]) {
+        boolean alterado = false;
         if (vetor[0] != null) {
             this.comentario = (String) vetor[0];
             this.dataCriacao = LocalDate.now();
             this.dataModificacao = null;
             this.id = ++total;
+            alterado = true;
         }
         if (user != null) {
             this.pessoa = user.getPessoa() ;
         }
+        return alterado;
     }
 
     public void update(Object vetor[]) {

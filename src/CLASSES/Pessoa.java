@@ -22,10 +22,10 @@ public class Pessoa implements ClasseInterface {
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     private LocalDate nascimento;
-   
+
     public static int total;
-    
-    public static String[] getCampos(){
+
+    public static String[] getCampos() {
         String[] campos = new String[5];
         campos[0] = "ID: ";
         campos[1] = "NOME: ";
@@ -34,7 +34,7 @@ public class Pessoa implements ClasseInterface {
         campos[4] = "DATA DE NASCIMENTO: ";
         return campos;
     }
-    
+
     public int getId() {
         return this.id;
     }
@@ -133,8 +133,44 @@ public class Pessoa implements ClasseInterface {
             this.atualizarDataModificacao();
         }
     }
- 
-    public void criar(Usuario user, Object[] vetor) {
+
+    public boolean criar(Usuario user, Object[] vetor) {
+        boolean alterado = false;
+        if (vetor[0] != null && vetor[0] instanceof String) {
+            this.nome = (String) vetor[0]; // Nome
+            if (vetor[2] != null && vetor[2] instanceof String) {
+                this.tipo = (String) vetor[2]; // Tipo
+                alterado = true;
+            }
+            if (vetor[1] != null && vetor[1] instanceof String) {
+                this.telefone = (String) vetor[1]; // Telefone
+            }
+
+            if (vetor[3] != null && vetor[3] instanceof String) {
+                String nasc = (String) vetor[3]; // Data de nascimento como string
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                try {
+                    // Converte a string de data para LocalDate
+                    LocalDate dataNascimento = LocalDate.parse(nasc, formato);
+                    this.nascimento = dataNascimento;
+                } catch (DateTimeParseException e) {
+                    System.out.println("Formato de data inválido: " + e.getMessage());
+                }
+            }
+
+        }
+        if(alterado){
+             // Atribui o ID único e define as datas de criação e modificação
+            this.id = ++total;
+            this.dataCriacao = LocalDate.now();
+            this.dataModificacao = null; // Nenhuma modificação inicial
+        }
+        return alterado;
+
+    }
+
+    public void criar(Object[] vetor) {
         if (vetor[0] != null && vetor[0] instanceof String) {
             this.nome = (String) vetor[0]; // Nome
         }
@@ -165,37 +201,7 @@ public class Pessoa implements ClasseInterface {
         this.dataCriacao = LocalDate.now();
         this.dataModificacao = null; // Nenhuma modificação inicial
     }
-    public void criar( Object[] vetor) {
-        if (vetor[0] != null && vetor[0] instanceof String) {
-            this.nome = (String) vetor[0]; // Nome
-        }
 
-        if (vetor[1] != null && vetor[1] instanceof String) {
-            this.telefone = (String) vetor[1]; // Telefone
-        }
-
-        if (vetor[2] != null && vetor[2] instanceof String) {
-            this.tipo = (String) vetor[2]; // Tipo
-        }
-
-        if (vetor[3] != null && vetor[3] instanceof String) {
-            String nasc = (String) vetor[3]; // Data de nascimento como string
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            try {
-                // Converte a string de data para LocalDate
-                LocalDate dataNascimento = LocalDate.parse(nasc, formato);
-                this.nascimento = dataNascimento;
-            } catch (DateTimeParseException e) {
-                System.out.println("Formato de data inválido: " + e.getMessage());
-            }
-        }
-
-        // Atribui o ID único e define as datas de criação e modificação
-        this.id = ++total;
-        this.dataCriacao = LocalDate.now();
-        this.dataModificacao = null; // Nenhuma modificação inicial
-    }
     public String ler() {
         String dados = "Pessoa " + this.id;
         dados += "\nNome: " + this.nome;
@@ -218,7 +224,6 @@ public class Pessoa implements ClasseInterface {
         return this.tipo;
 
     }
-
 
     public LocalDate getDataCriacao() {
         return this.dataCriacao;

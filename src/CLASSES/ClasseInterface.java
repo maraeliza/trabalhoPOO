@@ -17,7 +17,7 @@ public interface ClasseInterface {
     String ler();
     void deletar();
     
-    void criar(Usuario user, Object vetor[]);
+    boolean criar(Usuario user, Object vetor[]);
     void update(Object vetor[]);
     
 

@@ -21,15 +21,16 @@ public class Presente implements ClasseInterface {
     private LocalDate dataModificacao;
     private boolean escolhido;
     public static int total;
-    
-    public static String[] getCampos(){
+
+    public static String[] getCampos() {
         String[] campos = new String[3];
         campos[0] = "ID: ";
         campos[1] = "NOME: ";
         campos[2] = "TIPO: ";
-        
+
         return campos;
     }
+
     public int getId() {
         return this.id;
     }
@@ -90,7 +91,7 @@ public class Presente implements ClasseInterface {
     public LocalDate getDataModificacao() {
         return this.dataModificacao;
     }
-    
+
     public void criar(Object vetor[]) {
         if (vetor[0] != null && vetor[1] != null) {
             String nome = (String) vetor[0];
@@ -104,29 +105,39 @@ public class Presente implements ClasseInterface {
         }
 
     }
-    public void criar(Usuario user, Object vetor[]) {
+
+    public boolean criar(Usuario user, Object vetor[]) {
         System.out.println("CRIANDO UM NOVO PRESENTE!");
-               
-        if (vetor[0] != null && vetor[1] != null) {
-            System.out.println("VETOR PREENCHIDO");
-            String nome = (String) vetor[0];
-            
-            this.nome = nome;
-            String tipo = (String) vetor[1];
-            this.tipo = tipo;
+
+        boolean alterado = false;
+        if (vetor[0] != null && vetor[0] instanceof String) {
+            this.nome = (String) vetor[0]; // Nome
+            if (vetor[2] != null && vetor[2] instanceof String) {
+                this.tipo = (String) vetor[2]; // Tipo
+                alterado = true;
+            }
+
+        }
+        if (alterado) {
+            // Atribui o ID único e define as datas de criação e modificação
             this.id = ++total;
             this.dataCriacao = LocalDate.now();
-            this.dataModificacao = null;
+            this.dataModificacao = null; // Nenhuma modificação inicial
             this.escolhido = false;
         }
+        return alterado;
 
     }
 
     public String ler() {
         String dados = "";
         dados = "\n\nID: " + this.id;
-        dados += "\nNome: " + this.nome;
-        dados += "\nTipo: " + this.tipo;
+        if (this.nome.length() > 0) {
+            dados += "\nNome: " + this.nome;
+        }
+        if (this.tipo.length() > 0) {
+            dados += "\nTipo: " + this.tipo;
+        }
 
         if (this.escolhido) {
             dados += "\nEscolhido: SIM";
