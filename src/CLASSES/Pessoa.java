@@ -4,9 +4,7 @@
  */
 package CLASSES;
 
-import DAO.PessoaDAO;
 import java.time.LocalDate;
-
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -160,8 +158,8 @@ public class Pessoa implements ClasseInterface {
             }
 
         }
-        if(alterado){
-             // Atribui o ID único e define as datas de criação e modificação
+        if (alterado) {
+            // Atribui o ID único e define as datas de criação e modificação
             this.id = ++total;
             this.dataCriacao = LocalDate.now();
             this.dataModificacao = null; // Nenhuma modificação inicial
@@ -203,12 +201,35 @@ public class Pessoa implements ClasseInterface {
     }
 
     public String ler() {
-        String dados = "Pessoa " + this.id;
-        dados += "\nNome: " + this.nome;
-        dados += "\nData de nascimento: " + this.nascimento;
-        dados += "\nTelefone: " + this.telefone;
-        dados += "\n\n";
-        return dados;
+        StringBuilder resultado = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Adiciona informações da pessoa
+        resultado.append("Pessoa ").append(this.id);
+        resultado.append("\nNome: ").append(this.nome);
+
+        // Verifica e formata a data de nascimento
+        if (this.nascimento != null) {
+            resultado.append("\nData de Nascimento: ").append(this.nascimento.format(formatter));
+        }
+
+        // Verifica e adiciona o telefone
+        if (this.telefone != null && !this.telefone.isEmpty()) {
+            resultado.append("\nTelefone: ").append(this.telefone);
+        }
+
+        // Verifica e formata a data de criação
+        if (this.dataCriacao != null) {
+            resultado.append("\nData de Criação: ").append(this.dataCriacao.format(formatter));
+        }
+
+        // Verifica e formata a data de modificação
+        if (this.dataModificacao != null) {
+            resultado.append("\nData de Modificação: ").append(this.dataModificacao.format(formatter));
+        }
+
+        resultado.append("\n\n");
+        return resultado.toString();
     }
 
     public void deletar() {

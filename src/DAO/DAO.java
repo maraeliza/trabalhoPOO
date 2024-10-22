@@ -111,17 +111,16 @@ public class DAO {
         Pessoa pessoa3 = new Pessoa();
         pessoa3.criar(pessoa3Dados);
         this.addVetor(2, pessoa3);
-        
+
         Object[] pessoa4Dados = {"Ana", "3431 1335", "convidado", "01/01/2001"};
         Pessoa pessoa4 = new Pessoa();
         pessoa4.criar(pessoa4Dados);
         this.addVetor(2, pessoa4);
-        
+
         Usuario user1 = new Usuario();
-        Object[] userDados1 = {pessoa1, "admin", "1234", 1};
+        Object[] userDados1 = {1, "admin", "1234", 1, pessoa1};
         user1.criar(userDados1);
         this.addVetor(3, user1);
-        
 
     }
 
@@ -246,7 +245,7 @@ public class DAO {
     }
 
     public Object[] getVetorById(int id) {
-        System.out.println("pegando o vetor de id "+id);
+        System.out.println("pegando o vetor de id " + id);
         return this.todosOsVetores[id];
     }
 
@@ -267,21 +266,26 @@ public class DAO {
     }
 
     public String getTexto(int idClasse) {
-        System.out.println("LENDO CLASSE DE ID "+idClasse);
+        System.out.println("LENDO CLASSE DE ID " + idClasse);
         System.out.println("");
         String texto = this.listaNomesClasses[idClasse] + " JÁ CADASTRADOS";
-        texto += "\nTotal: " + this.getTotalClasse(idClasse) + " itens\n\n";
+        if (this.getTotalClasse(idClasse) > 1) {
+            texto += "\nTotal: " + this.getTotalClasse(idClasse) + " itens\n\n";
+        } else if (this.getTotalClasse(idClasse) == 1) {
+            texto += "\nTotal: " + this.getTotalClasse(idClasse) + " item\n\n";
+        }
+
         if (this.getTotalClasse(idClasse) > 0) {
             Object[] vetor = this.getVetorById(idClasse);
             for (int i = 0; i < vetor.length; i++) {
                 if (vetor[i] != null) {
                     System.out.println("ITEM NÃO NULO");
                     if (vetor[i] instanceof ClasseInterface) {
-                       
+
                         int id = ((ClasseInterface) vetor[i]).getId();
-                         System.out.println("LENDO ITEM DE ID "+id);
+                        System.out.println("LENDO ITEM DE ID " + id);
                         texto += ((ClasseInterface) vetor[i]).ler();
-                         System.out.println("LENDO TEXTO  ");
+                        System.out.println("LENDO TEXTO  ");
                     }
 
                 }
@@ -292,31 +296,59 @@ public class DAO {
 
         return texto;
     }
-    public Class<?> getClasseByID(int idClasse){
+
+    public Class<?> getClasseByID(int idClasse) {
+        System.out.println("LENDO A CLASSE DE ID " + idClasse + " e nome " + this.getNameClasseById(idClasse));
         return this.listaClasses[idClasse];
     }
-    
+
     public void cadastrar(int idClasse, Object infos[], Usuario userLogado) {
-        System.out.println("ADICIONANDO NO VETOR DA CLASSE DE ID "+idClasse);
-        System.out.println("CLASSE NOME: "+this.getNameClasseById(idClasse));
+        boolean criado = false;
+        System.out.println("ADICIONANDO NO VETOR DA CLASSE DE ID " + idClasse);
+        System.out.println("CLASSE NOME: " + this.getNameClasseById(idClasse));
         try {
             // Obtém a classe correspondente ao idClasse
             Class<?> classe = this.listaClasses[idClasse];
 
             // Cria uma nova instância da classe
             ClasseInterface objeto = (ClasseInterface) classe.getDeclaredConstructor().newInstance();
-             System.out.println("CRIANDO O OBJETO");
+            System.out.println("CRIANDO O OBJETO");
             // Chama o método criar com as informações fornecidas
-            objeto.criar(userLogado, infos);
-            System.out.println("add no vetor");
-            // Adiciona o objeto ao vetor correspondente
-            boolean adicionado = this.addVetor(idClasse, objeto);
 
-            if (adicionado) {
-                System.out.println("ADICIONADO COM SUCESSO!");
+            if (this.getNameClasseById(idClasse).equals("USUÁRIOS")) {
+                System.out.println("usuario detectado");
+                
+                  
+                        Pessoa pessoa = (Pessoa) this.getItemByID(2, Util.stringToInt((String)infos[0]));
+                        if (pessoa != null ) {
+                            infos[4] = pessoa;
+                            criado = objeto.criar(userLogado, infos);
+                            
+                        }else{
+                            System.out.println("Não foi possivel criar o objeto");
+                            Util.mostrarErro("Não foi possível adicionar o usuário porque a pessoa não foi encontrada");
+                        }
+                        
+                    
+                
+
             } else {
-                System.out.println("NÃO FOI POSSÍVEL ADICIONAR!");
+                criado = objeto.criar(userLogado, infos);
             }
+            if (criado) {
+                System.out.println("add no vetor");
+                // Adiciona o objeto ao vetor correspondente
+                boolean adicionado = this.addVetor(idClasse, objeto);
+
+                if (adicionado) {
+                    Util.mostrarMSG("Cadastrado com sucesso!");
+                } else {
+                    Util.mostrarErro("Não foi possível realizar o cadastro!");
+                }
+            }else{
+                Util.mostrarErro("Não foi possível realizar o cadastro!");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERRO AO CRIAR O OBJETO: " + e.getMessage());
@@ -330,7 +362,7 @@ public class DAO {
             System.out.println("ITEM ENCONTRADO!");
             ClasseInterface item = this.getItemByID(idClasse, id);
             if (item != null) {
-                item.update(infos); 
+                item.update(infos);
 
                 System.out.println("ATUALIZADO COM SUCESSO!");
                 Util.mostrarMSG("ATUALIZADO COM SUCESSO!");
@@ -397,8 +429,8 @@ public class DAO {
     }
 
     public boolean delItemByID(int idClasse, int id) {
-        System.out.println("DELETANDO ITEM "+id+" DA CLASSE DE ID "+idClasse);
-        System.out.println("NOME DA CLASSE "+this.getNameClasseById(idClasse));
+        System.out.println("DELETANDO ITEM " + id + " DA CLASSE DE ID " + idClasse);
+        System.out.println("NOME DA CLASSE " + this.getNameClasseById(idClasse));
         Object[] vetor = this.getVetorById(idClasse);
         System.out.println("vetor pego");
         for (int i = 0; i < vetor.length; i++) {
@@ -410,7 +442,7 @@ public class DAO {
                     System.out.println("elemento encontrado");
                     vetor[i] = null; // Remove o item
                     System.out.println("elemento apagado");
-                    
+
                     return true;
                 }
             }
@@ -431,7 +463,7 @@ public class DAO {
         return noivos;
     }
 
-    public  String getTextoNoivos() {
+    public String getTextoNoivos() {
         String texto = "\n                    ";
         int n = 0;
         Pessoa vPessoas[] = (Pessoa[]) this.todosOsVetores[2];
@@ -446,35 +478,67 @@ public class DAO {
         }
         return texto;
     }
-    public Usuario getUser(String user){
 
-        System.out.println("Procurando usuario "+user);
+    public String getNomesPessoasSemUsers() {
+        String texto = "\n                    ";
+        Pessoa vPessoas[] = (Pessoa[]) this.todosOsVetores[2];
         Usuario vUsers[] = (Usuario[]) this.todosOsVetores[3];
-        for(int i = 0; i < vUsers.length; i++){
-            
-            if(vUsers[i] != null && vUsers[i].getLogin().equals(user) ){
-                System.out.println("usuario encontrado "+user);
+        boolean userVinculado = false;
+        int c = 0;
+        for (int i = 0; i < vPessoas.length; i++) {
+            if (vPessoas[i] != null) {
+                userVinculado = false;
+                for (int n = 0; n < vUsers.length; n++) {
+                    if (vUsers[n] != null && vUsers[n].getIdPessoa() == vPessoas[i].getId()) {
+                        userVinculado = true;
+
+                    }
+
+                }
+                if (!userVinculado) {
+                    texto += "\nID: " + vPessoas[i].getId() + "\nNome: " + vPessoas[i].getNome();
+                    c++;
+                    texto += "\n";
+                }
+
+            }
+
+        }
+
+        if (c == 0) {
+            texto = "\n\nNENHUMA PESSOA CADASTRADA SEM USUÁRIO VINCULADO!\n\n";
+        }
+        return texto;
+    }
+
+    public Usuario getUser(String user) {
+
+        System.out.println("Procurando usuario " + user);
+        Usuario vUsers[] = (Usuario[]) this.todosOsVetores[3];
+        for (int i = 0; i < vUsers.length; i++) {
+
+            if (vUsers[i] != null && vUsers[i].getLogin().equals(user)) {
+                System.out.println("usuario encontrado " + user);
                 return vUsers[i];
             }
         }
-        System.out.println("usuario nao encontrado "+user);
+        System.out.println("usuario nao encontrado " + user);
         return null;
     }
 
-    public  boolean autentica(String user, String senha){
-        System.out.println("Autenticando usuario "+user+" com senha "+senha);
+    public boolean autentica(String user, String senha) {
+        System.out.println("Autenticando usuario " + user + " com senha " + senha);
         Usuario usuario = this.getUser(user);
-        
-        
-        if(usuario != null){
-            System.out.println("usuario encontrado "+usuario.getLogin());
-            if(usuario.getSenha().equals(senha) ){
+
+        if (usuario != null) {
+            System.out.println("usuario encontrado " + usuario.getLogin());
+            if (usuario.getSenha().equals(senha)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
-        }else{
-            System.out.println("usuario nao encontrado "+user);
+        } else {
+            System.out.println("usuario nao encontrado " + user);
             return false;
         }
     }

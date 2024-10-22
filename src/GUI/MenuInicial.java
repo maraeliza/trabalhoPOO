@@ -140,6 +140,10 @@ public class MenuInicial {
     }
 
     private void lidarEscolha(int o) {
+        if(o == 13){
+             MenuRelatorio menu = new MenuRelatorio();
+             menu.exibir(this.dao, this.userLogado,MenuInicial.logou);
+        }
         if (o >= this.nOps) {
             TelaInicial menu = new TelaInicial();
             op = menu.exibir(this.dao);

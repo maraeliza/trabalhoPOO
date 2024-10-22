@@ -20,7 +20,15 @@ public class Cerimonial {
     private LocalDate dataModificacao;
 
     public static int totalCerimoniais;
-
+   
+    public static String[] getCampos(){
+        String[] campos = new String[2];
+        campos[0] = "ID: ";
+        campos[1] = "Nome: ";
+        campos[2] = "Telefone: ";
+   
+        return campos;
+    }
     // Getters e Setters
     public int getId() {
         return this.id;

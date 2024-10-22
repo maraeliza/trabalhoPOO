@@ -50,7 +50,7 @@ public class Menu_CREATE {
             e.printStackTrace();
         }
 
-        montarPainel();
+        montarPainel(); 
         return "";
     }
 
@@ -64,6 +64,10 @@ public class Menu_CREATE {
         for (int i = 1; i < this.vetor.length; i++) {
             if (this.vetor[i] != null && result != null) {
                 conteudo = "\nCADASTRAR " + this.nomeClasse.toUpperCase();
+                if (this.nomeClasse.toUpperCase().equals("USUÁRIOS") && i == 1) {
+                    conteudo += "\nNOMES DE PESSOAS SEM USUÁRIOS VINCULADOS:";
+                    conteudo += this.dao.getNomesPessoasSemUsers();
+                }
                 conteudo += "\n\nINSIRA " + this.vetor[i].toUpperCase();
                 result = JOptionPane.showInputDialog(null, conteudo, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
                 this.valores[this.nColetados] = result;

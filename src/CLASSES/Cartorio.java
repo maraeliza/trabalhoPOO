@@ -22,7 +22,15 @@ public class Cartorio {
     private LocalDate dataModificacao;
 
     public static int totalCartorios;
-
+    
+     public static String[] getCampos(){
+        String[] campos = new String[2];
+        campos[0] = "ID: ";
+        campos[1] = "Nome: ";
+        campos[2] = "Telefone: ";
+        campos[3] = "Endereço: ";
+        return campos;
+    }
     // Getters e Setters
     public int getId() {
         return this.id;

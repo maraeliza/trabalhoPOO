@@ -7,6 +7,8 @@ package CLASSES;
 import GUI.Util;
 import java.time.LocalDate;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author CAUPT - ALUNOS
@@ -21,14 +23,14 @@ public class Recado implements ClasseInterface {
     private LocalDate dataModificacao;
 
     public static int total;
-    
-    public static String[] getCampos(){
+
+    public static String[] getCampos() {
         String[] campos = new String[2];
         campos[0] = "ID: ";
         campos[1] = "Comentário: ";
         return campos;
     }
-    
+
     public int getId() {
         return this.id;
     }
@@ -94,7 +96,7 @@ public class Recado implements ClasseInterface {
             alterado = true;
         }
         if (user != null) {
-            this.pessoa = user.getPessoa() ;
+            this.pessoa = user.getPessoa();
         }
         return alterado;
     }
@@ -109,7 +111,7 @@ public class Recado implements ClasseInterface {
 
             }
         }
-       
+
         if (alterou) {
             this.atualizarDataModificacao();
         }
@@ -140,6 +142,7 @@ public class Recado implements ClasseInterface {
         }
 
     }
+
     public void atualizarDataModificacao() {
 
         this.dataModificacao = LocalDate.now();
@@ -150,16 +153,30 @@ public class Recado implements ClasseInterface {
     }
 
     public String ler() {
-        String dados = "";
-        dados = "\nID: " + this.id;
-        dados += "\n   Comentário: " + this.comentario;
-        if (this.pessoa != null && this.pessoa.getNome().length() > 1) {
-            dados += "\n   Autor: " + this.pessoa.getNome();
-        }
-        dados += "\n   Data de criação: " + Util.dateToString(this.dataCriacao);
+        StringBuilder resultado = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        return dados;
+        // Adiciona o ID
+        resultado.append("\nID: ").append(this.id);
+
+        // Verifica se o comentário não é nulo ou vazio
+        if (this.comentario != null && !this.comentario.isEmpty()) {
+            resultado.append("\n   Comentário: ").append(this.comentario);
+        }
+
+        // Verifica se a pessoa não é nula e se o nome é válido
+        if (this.pessoa != null && this.pessoa.getNome() != null && this.pessoa.getNome().length() > 1) {
+            resultado.append("\n   Autor: ").append(this.pessoa.getNome());
+        }
+
+        // Verifica e formata a data de criação
+        if (this.dataCriacao != null) {
+            resultado.append("\n   Data de Criação: ").append(this.dataCriacao.format(formatter));
+        }
+        if (this.dataModificacao != null) {
+            resultado.append("\nData de Modificação: ").append(this.dataModificacao.format(formatter));
+        }
+        return resultado.toString();
     }
-    
-   
+
 }

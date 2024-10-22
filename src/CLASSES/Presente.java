@@ -4,8 +4,9 @@
  */
 package CLASSES;
 
-import DAO.PresenteDAO;
 import java.time.LocalDate;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -108,12 +109,12 @@ public class Presente implements ClasseInterface {
 
     public boolean criar(Usuario user, Object vetor[]) {
         System.out.println("CRIANDO UM NOVO PRESENTE!");
-
+        System.out.println(vetor[0] + " " + vetor[1] + " " + vetor[2]);
         boolean alterado = false;
         if (vetor[0] != null && vetor[0] instanceof String) {
             this.nome = (String) vetor[0]; // Nome
-            if (vetor[2] != null && vetor[2] instanceof String) {
-                this.tipo = (String) vetor[2]; // Tipo
+            if (vetor[1] != null && vetor[1] instanceof String) {
+                this.tipo = (String) vetor[1]; // Tipo
                 alterado = true;
             }
 
@@ -130,22 +131,43 @@ public class Presente implements ClasseInterface {
     }
 
     public String ler() {
-        String dados = "";
-        dados = "\n\nID: " + this.id;
-        if (this.nome.length() > 0) {
-            dados += "\nNome: " + this.nome;
-        }
-        if (this.tipo.length() > 0) {
-            dados += "\nTipo: " + this.tipo;
+        StringBuilder resultado = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Adiciona o ID
+        resultado.append("\n\nID: ").append(this.id);
+
+        // Verifica e adiciona o nome
+        if (this.nome != null && this.nome.length() > 0) {
+            resultado.append("\nNome: ").append(this.nome);
         }
 
-        if (this.escolhido) {
-            dados += "\nEscolhido: SIM";
-            dados += "\nPessoa " + this.pessoa.getNome();
-        } else {
-            dados += "\nEscolhido: NÃO";
+        // Verifica e adiciona o tipo
+        if (this.tipo != null && this.tipo.length() > 0) {
+            resultado.append("\nTipo: ").append(this.tipo);
         }
-        return dados;
+
+        // Verifica se foi escolhido e adiciona informações da pessoa
+        if (this.escolhido) {
+            resultado.append("\nEscolhido: SIM");
+            if (this.pessoa != null && this.pessoa.getNome() != null && this.pessoa.getNome().length() > 0) {
+                resultado.append("\nPessoa: ").append(this.pessoa.getNome());
+            }
+        } else {
+            resultado.append("\nEscolhido: NÃO");
+        }
+
+        // Verifica e formata a data de criação
+        if (this.dataCriacao != null) {
+            resultado.append("\nData de Criação: ").append(this.dataCriacao.format(formatter));
+        }
+
+        // Verifica e formata a data de modificação
+        if (this.dataModificacao != null) {
+            resultado.append("\nData de Modificação: ").append(this.dataModificacao.format(formatter));
+        }
+
+        return resultado.toString();
     }
 
     public void update(Object vetor[]) {
