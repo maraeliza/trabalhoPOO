@@ -42,27 +42,12 @@ public class Menu_CREATE {
         this.cleanVetor();
         System.out.println("MENU DA CLASSE " + this.nomeClasse);
 
-        switch (this.nomeClasse) {
-
-            case "PRESENTE" -> {
-                this.add("Nome: ");
-                this.add("Tipo: ");
-
-                break;
-            }
-            case "RECADOS" -> {
-                this.add("Comentário: ");
-
-                break;
-            }
-            case "PESSOA" -> {
-                this.add("Nome: ");
-                this.add("Telefone: ");
-                this.add("Tipo: ");
-                this.add("Data de Nascimento: ");
-                break;
-            }
-
+        Class<?> classe = this.dao.getClasseByID(this.idClasse);    
+        try{
+            java.lang.reflect.Method metodo = classe.getMethod("getCampos");
+            this.vetor = (String[]) metodo.invoke(null);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         montarPainel();
@@ -76,7 +61,7 @@ public class Menu_CREATE {
         this.valores = new Object[10];
         String result = "";
         this.nColetados = 0;
-        for (int i = 0; i < this.vetor.length; i++) {
+        for (int i = 1; i < this.vetor.length; i++) {
             if (this.vetor[i] != null && result != null) {
                 conteudo = "\nCADASTRAR " + this.nomeClasse.toUpperCase();
                 conteudo += "\n\nINSIRA " + this.vetor[i].toUpperCase();

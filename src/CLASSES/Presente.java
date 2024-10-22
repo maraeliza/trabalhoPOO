@@ -105,8 +105,12 @@ public class Presente implements ClasseInterface {
 
     }
     public void criar(Usuario user, Object vetor[]) {
+        System.out.println("CRIANDO UM NOVO PRESENTE!");
+               
         if (vetor[0] != null && vetor[1] != null) {
+            System.out.println("VETOR PREENCHIDO");
             String nome = (String) vetor[0];
+            
             this.nome = nome;
             String tipo = (String) vetor[1];
             this.tipo = tipo;
@@ -136,16 +140,16 @@ public class Presente implements ClasseInterface {
     public void update(Object vetor[]) {
         boolean alterou = false;
 
-        if (vetor[0] != null) {
-            String nome = (String) vetor[0];
+        if (vetor[1] != null) {
+            String nome = (String) vetor[1];
             if (nome.length() > 0) {
                 this.nome = nome;
                 alterou = true;
 
             }
         }
-        if (vetor[1] != null) {
-            String tipo = (String) vetor[1];
+        if (vetor[2] != null) {
+            String tipo = (String) vetor[2];
             if (tipo.length() > 0) {
                 this.tipo = tipo;
                 alterou = true;
@@ -153,16 +157,16 @@ public class Presente implements ClasseInterface {
             }
         }
 
-        if (vetor[2] != null) {
-            Pessoa p = (Pessoa) vetor[2];
+        if (vetor[3] != null) {
+            Pessoa p = (Pessoa) vetor[3];
             if (p != null) {
                 this.pessoa = p;
                 alterou = true;
 
             }
         }
-        if (vetor[3] != null) {
-            boolean escolheu = (boolean) vetor[3];
+        if (vetor[4] != null) {
+            boolean escolheu = (boolean) vetor[4];
             if (escolheu != this.escolhido) {
                 this.escolhido = escolheu;
                 alterou = true;

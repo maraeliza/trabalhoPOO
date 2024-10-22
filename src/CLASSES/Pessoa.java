@@ -88,8 +88,8 @@ public class Pessoa implements ClasseInterface {
         boolean alterou = false;
 
         // Atualiza o nome
-        if (vetor[0] != null && vetor[0] instanceof String) {
-            String nome = (String) vetor[0];
+        if (vetor[1] != null && vetor[1] instanceof String) {
+            String nome = (String) vetor[1];
             if (!nome.isEmpty()) {
                 this.nome = nome;
                 alterou = true;
@@ -97,8 +97,8 @@ public class Pessoa implements ClasseInterface {
         }
 
         // Atualiza o telefone
-        if (vetor[1] != null && vetor[1] instanceof String) {
-            String telefone = (String) vetor[1];
+        if (vetor[2] != null && vetor[2] instanceof String) {
+            String telefone = (String) vetor[2];
             if (!telefone.isEmpty()) {
                 this.telefone = telefone;
                 alterou = true;
@@ -106,8 +106,8 @@ public class Pessoa implements ClasseInterface {
         }
 
         // Atualiza a data de nascimento (recebe como String e converte para LocalDate)
-        if (vetor[2] != null && vetor[2] instanceof String) {
-            String nascimentoStr = (String) vetor[2];
+        if (vetor[3] != null && vetor[3] instanceof String) {
+            String nascimentoStr = (String) vetor[3];
             try {
                 // Define o formato da data esperado (por exemplo, "dd/MM/yyyy")
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -120,8 +120,8 @@ public class Pessoa implements ClasseInterface {
         }
 
         // Atualiza o tipo
-        if (vetor[3] != null && vetor[3] instanceof String) {
-            String tipo = (String) vetor[3];
+        if (vetor[4] != null && vetor[4] instanceof String) {
+            String tipo = (String) vetor[4];
             if (!tipo.isEmpty()) {
                 this.tipo = tipo;
                 alterou = true;

@@ -100,7 +100,7 @@ public class Recado implements ClasseInterface {
     public void update(Object vetor[]) {
         boolean alterou = false;
         if (vetor[0] != null) {
-            String comentario = (String) vetor[0];
+            String comentario = (String) vetor[1];
             if (comentario.length() > 0) {
                 this.comentario = comentario;
                 alterou = true;

@@ -47,6 +47,7 @@ public class Menu_CRUD {
 
     public void exibir( DAO dao, int idClasse, boolean logou, Usuario user) {
         this.dao = dao;
+        System.out.println("Atualizando id da classe para "+idClasse);
         this.idClasse = idClasse;
         this.logou = logou;
         this.user = user;
