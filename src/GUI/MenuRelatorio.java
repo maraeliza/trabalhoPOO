@@ -3,11 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package GUI;
-
 import DAO.*;
-
 import javax.swing.JOptionPane;
-import javax.swing.*;
 import CLASSES.Usuario;
 
 /**

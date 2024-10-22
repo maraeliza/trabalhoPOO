@@ -5,7 +5,6 @@
 package GUI;
 
 import DAO.DAO;
-import java.lang.reflect.Method;
 import javax.swing.JOptionPane;
 
 /**
@@ -53,27 +52,6 @@ public class Menu_DEL {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String getDados(Class<?> clazzDAO) {
-        this.texto = "";
-
-        try {
-            Method metodo = clazzDAO.getMethod("getTexto");
-
-            // Invoca o método estático (passando null porque não precisamos de uma instância)
-            this.texto = (String) metodo.invoke(null);
-
-            System.out.println(this.texto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return this.texto;
-    }
-
-    public void montarPainel() {
-
     }
 
     public boolean add(String p) {

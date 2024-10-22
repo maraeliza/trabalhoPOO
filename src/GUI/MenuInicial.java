@@ -7,7 +7,6 @@ package GUI;
 import DAO.*;
 
 import javax.swing.JOptionPane;
-import javax.swing.*;
 import CLASSES.Usuario;
 
 /**
@@ -50,21 +49,7 @@ public class MenuInicial {
         listaClasses[12] = "RELATÓRIOS";
 
         this.listaNomeClasses = listaClasses;
-        this.listaClassesDAO = new Class<?>[]{
-            RecadoDAO.class, // RECADOS
-            PresenteDAO.class, // PRESENTES
-            PessoaDAO.class, // PESSOA
-            UsuarioDAO.class, // USUÁRIOS
-            FornecedorDAO.class, // FORNECEDOR
-            EventoDAO.class, // EVENTO
-            CerimonialDAO.class, // CERIMONIAL
-            IgrejaDAO.class, // IGREJA
-            CartorioDAO.class, // CARTÓRIO
-            Convidado_IndividualDAO.class, // CONVIDADO INDIVIDUAL
-            Convidado_FamiliaDAO.class, // CONVIDADO FAMÍLIA
-            PagamentoDAO.class, // PAGAMENTO
-            RelatorioDAO.class // RELATÓRIOS
-        };
+        
 
     }
 

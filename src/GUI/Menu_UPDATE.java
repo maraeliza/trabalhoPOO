@@ -5,17 +5,7 @@
 package GUI;
 
 import DAO.DAO;
-import DAO.PessoaDAO;
-import java.lang.reflect.Method;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import DAO.PresenteDAO;
-
-import DAO.RecadoDAO;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -103,9 +93,6 @@ public class Menu_UPDATE {
 
     }
 
-    public void cadastrar(int n) {
-
-    }
 
     public boolean add(String atributo) {
         for (int i = 0; i < this.vetor.length; i++) {
