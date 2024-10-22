@@ -105,8 +105,10 @@ public class Pagamento implements ClasseInterface {
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
-
     public boolean criar(Usuario user, Object vetor[]) {
+        return criar(vetor);
+    }
+    public boolean criar( Object vetor[]) {
         System.out.println("CRIANDO UM NOVO PAGAMENTO!");
         System.out.println("Dados: " + vetor[0] + " " + vetor[1] + " " + vetor[2] + " " + vetor[3] + " " + vetor[4]);
 
@@ -189,7 +191,7 @@ public class Pagamento implements ClasseInterface {
         }
 
         if (this.dataModificacao != null) {
-            resultado.append("Data de Modificação: ").append(this.dataModificacao.format(formatter)).append("\n");
+            resultado.append("Data da Última Modificação: ").append(this.dataModificacao.format(formatter)).append("\n");
         }
 
         return resultado.toString();

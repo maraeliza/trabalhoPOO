@@ -20,8 +20,17 @@ public class Pessoa implements ClasseInterface {
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
     private LocalDate nascimento;
+    private boolean userVinculado;
 
     public static int total;
+
+    public boolean isUserVinculado() {
+        return userVinculado;
+    }
+
+    public void setUserVinculado(boolean userVinculado) {
+        this.userVinculado = userVinculado;
+    }
 
     public static String[] getCampos() {
         String[] campos = new String[5];
@@ -159,45 +168,48 @@ public class Pessoa implements ClasseInterface {
 
         }
         if (alterado) {
-            // Atribui o ID único e define as datas de criação e modificação
             this.id = ++total;
             this.dataCriacao = LocalDate.now();
-            this.dataModificacao = null; // Nenhuma modificação inicial
+            this.dataModificacao = null;
+            this.userVinculado = false;
         }
         return alterado;
 
     }
 
-    public void criar(Object[] vetor) {
+    public boolean criar(Object[] vetor) {
+        boolean criado = false;
         if (vetor[0] != null && vetor[0] instanceof String) {
             this.nome = (String) vetor[0]; // Nome
-        }
-
-        if (vetor[1] != null && vetor[1] instanceof String) {
-            this.telefone = (String) vetor[1]; // Telefone
-        }
-
-        if (vetor[2] != null && vetor[2] instanceof String) {
-            this.tipo = (String) vetor[2]; // Tipo
-        }
-
-        if (vetor[3] != null && vetor[3] instanceof String) {
-            String nasc = (String) vetor[3]; // Data de nascimento como string
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            try {
-                // Converte a string de data para LocalDate
-                LocalDate dataNascimento = LocalDate.parse(nasc, formato);
-                this.nascimento = dataNascimento;
-            } catch (DateTimeParseException e) {
-                System.out.println("Formato de data inválido: " + e.getMessage());
+            if (vetor[1] != null && vetor[1] instanceof String) {
+                this.telefone = (String) vetor[1]; // Telefone
             }
-        }
 
-        // Atribui o ID único e define as datas de criação e modificação
-        this.id = ++total;
-        this.dataCriacao = LocalDate.now();
-        this.dataModificacao = null; // Nenhuma modificação inicial
+            if (vetor[2] != null && vetor[2] instanceof String) {
+                this.tipo = (String) vetor[2]; // Tipo
+            }
+            if (vetor[3] != null && vetor[3] instanceof String) {
+                String nasc = (String) vetor[3]; // Data de nascimento como string
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                try {
+                    // Converte a string de data para LocalDate
+                    LocalDate dataNascimento = LocalDate.parse(nasc, formato);
+                    this.nascimento = dataNascimento;
+                } catch (DateTimeParseException e) {
+                    System.out.println("Formato de data inválido: " + e.getMessage());
+                }
+            }
+            criado = true;
+        }
+        if (criado) {
+            // Atribui o ID único e define as datas de criação e modificação
+            this.id = ++total;
+            this.dataCriacao = LocalDate.now();
+            this.dataModificacao = null; // Nenhuma modificação inicial
+
+        }
+        return criado;
     }
 
     public String ler() {
@@ -225,7 +237,7 @@ public class Pessoa implements ClasseInterface {
 
         // Verifica e formata a data de modificação
         if (this.dataModificacao != null) {
-            resultado.append("\nData de Modificação: ").append(this.dataModificacao.format(formatter));
+            resultado.append("\nData da Última Modificação: ").append(this.dataModificacao.format(formatter));
         }
 
         resultado.append("\n\n");

@@ -103,8 +103,12 @@ public class Fornecedor implements ClasseInterface {
         this.dataModificacao = LocalDate.now();
     }
 
-    @Override
     public boolean criar(Usuario user, Object vetor[]) {
+        return criar(vetor);
+    }
+
+    @Override
+    public boolean criar(Object vetor[]) {
         if (vetor.length < 6) {
             return false; // Verifica se há informações suficientes
         }

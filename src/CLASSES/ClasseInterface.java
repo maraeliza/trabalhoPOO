@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package CLASSES;
+
 import java.time.LocalDate;
 
 /**
@@ -10,22 +11,25 @@ import java.time.LocalDate;
  * @author Mara
  */
 public interface ClasseInterface {
-    
+
     int getId();
+
     void setId(int id);
-    
+
     String ler();
+
     void deletar();
 
+    boolean criar(Object vetor[]);
+
     boolean criar(Usuario user, Object vetor[]);
+
     void update(Object vetor[]);
-    
 
     LocalDate getDataCriacao();
+
     LocalDate getDataModificacao();
-        
+
     void atualizarDataModificacao();
-    
-    
-           
+
 }

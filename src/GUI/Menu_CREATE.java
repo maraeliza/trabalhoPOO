@@ -42,15 +42,15 @@ public class Menu_CREATE {
         this.cleanVetor();
         System.out.println("MENU DA CLASSE " + this.nomeClasse);
 
-        Class<?> classe = this.dao.getClasseByID(this.idClasse);    
-        try{
+        Class<?> classe = this.dao.getClasseByID(this.idClasse);
+        try {
             java.lang.reflect.Method metodo = classe.getMethod("getCampos");
             this.vetor = (String[]) metodo.invoke(null);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        montarPainel(); 
+        montarPainel();
         return "";
     }
 
@@ -69,10 +69,17 @@ public class Menu_CREATE {
                     conteudo += this.dao.getNomesPessoasSemUsers();
                 }
                 conteudo += "\n\nINSIRA " + this.vetor[i].toUpperCase();
-                result = JOptionPane.showInputDialog(null, conteudo, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
-                this.valores[this.nColetados] = result;
+                do {
+                    result = JOptionPane.showInputDialog(null, conteudo, "UaiCasórioPro", JOptionPane.QUESTION_MESSAGE);
+                    if (result.length() > 0) {
+                        this.valores[this.nColetados] = result;
+                        this.nColetados++;
+                    } else {
+                        Util.mostrarErro("Preencha o campo!");
+                    }
+                } while (result.length() <= 0);
+
                 System.out.println(this.valores[this.nColetados]);
-                this.nColetados++;
             }
         }
         this.dao.cadastrar(this.idClasse, this.valores, this.userLogado);

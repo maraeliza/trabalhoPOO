@@ -73,17 +73,19 @@ public class Recado implements ClasseInterface {
         return this.dataModificacao;
     }
 
-    public void criar(Object vetor[]) {
-
+    public boolean criar(Object vetor[]) {
+        boolean alterado = false;
         if (vetor[1] != null) {
             this.comentario = (String) vetor[1];
             this.dataCriacao = LocalDate.now();
             this.dataModificacao = null;
             this.id = ++total;
+              alterado = true;
         }
         if (vetor[0] != null) {
             this.pessoa = (Pessoa) vetor[0];
         }
+        return alterado;
     }
 
     public boolean criar(Usuario user, Object vetor[]) {
@@ -174,7 +176,7 @@ public class Recado implements ClasseInterface {
             resultado.append("\n   Data de Criação: ").append(this.dataCriacao.format(formatter));
         }
         if (this.dataModificacao != null) {
-            resultado.append("\nData de Modificação: ").append(this.dataModificacao.format(formatter));
+            resultado.append("\n   Data da Última Modificação: ").append(this.dataModificacao.format(formatter));
         }
         return resultado.toString();
     }

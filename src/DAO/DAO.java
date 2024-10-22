@@ -317,21 +317,21 @@ public class DAO {
 
             if (this.getNameClasseById(idClasse).equals("USUÁRIOS")) {
                 System.out.println("usuario detectado");
-                
-                  
-                        Pessoa pessoa = (Pessoa) this.getItemByID(2, Util.stringToInt((String)infos[0]));
-                        if (pessoa != null ) {
-                            infos[4] = pessoa;
-                            criado = objeto.criar(userLogado, infos);
-                            
-                        }else{
-                            System.out.println("Não foi possivel criar o objeto");
-                            Util.mostrarErro("Não foi possível adicionar o usuário porque a pessoa não foi encontrada");
-                        }
-                        
-                    
-                
 
+                Pessoa pessoa = (Pessoa) this.getItemByID(2, Util.stringToInt((String) infos[0]));
+                if (pessoa != null) {
+                    if (!pessoa.isUserVinculado()) {
+
+                        infos[4] = pessoa;
+                        criado = objeto.criar(userLogado, infos);
+                    } else {
+                        Util.mostrarErro("A conta de usuário de " + pessoa.getNome() + " já existe!");
+                    }
+
+                } else {
+                    Util.mostrarErro("Pessoa de id " + infos[0] + " não encontrada");
+
+                }
             } else {
                 criado = objeto.criar(userLogado, infos);
             }
@@ -345,8 +345,6 @@ public class DAO {
                 } else {
                     Util.mostrarErro("Não foi possível realizar o cadastro!");
                 }
-            }else{
-                Util.mostrarErro("Não foi possível realizar o cadastro!");
             }
 
         } catch (Exception e) {
@@ -439,6 +437,7 @@ public class DAO {
                 System.out.println("verificado!");
                 ClasseInterface item = (ClasseInterface) vetor[i]; // Faz o cast
                 if (item.getId() == id) {
+                    item.deletar();
                     System.out.println("elemento encontrado");
                     vetor[i] = null; // Remove o item
                     System.out.println("elemento apagado");
@@ -487,22 +486,12 @@ public class DAO {
         int c = 0;
         for (int i = 0; i < vPessoas.length; i++) {
             if (vPessoas[i] != null) {
-                userVinculado = false;
-                for (int n = 0; n < vUsers.length; n++) {
-                    if (vUsers[n] != null && vUsers[n].getIdPessoa() == vPessoas[i].getId()) {
-                        userVinculado = true;
-
-                    }
-
-                }
-                if (!userVinculado) {
+                if (!vPessoas[i].isUserVinculado()) {
                     texto += "\nID: " + vPessoas[i].getId() + "\nNome: " + vPessoas[i].getNome();
                     c++;
                     texto += "\n";
                 }
-
             }
-
         }
 
         if (c == 0) {

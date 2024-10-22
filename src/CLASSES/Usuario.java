@@ -8,6 +8,7 @@ import DAO.DAO;
 import GUI.Util;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author CAUPT - ALUNOS
@@ -129,26 +130,38 @@ public class Usuario implements ClasseInterface {
                 System.out.println("ID DIFERENTE DE ZERO!");
                 System.out.println("Procurando pessoa de id " + vetor[0]);
                 Pessoa pessoa = (Pessoa) vetor[4];
-                if (pessoa != null && idPessoa == pessoa.getId()) {
-                    System.out.println("Pessoa encontrada " + pessoa.getNome());
+                if (pessoa != null) {
+                    if (!pessoa.isUserVinculado()) {
+                        if (pessoa != null
+                                && idPessoa == pessoa.getId()
+                                && !pessoa.isUserVinculado()) {
+                            System.out.println("Pessoa encontrada " + pessoa.getNome());
 
-                    String login = (String) vetor[1];
-                    String senha = (String) vetor[2];
-                    int tipo = (int) vetor[3];
+                            String login = (String) vetor[1];
+                            String senha = (String) vetor[2];
+                            int tipo = (int) vetor[3];
 
-                    if (login.length() > 0 && senha.length() > 0 && this.checarTipo(tipo)) {
-                        this.pessoa = pessoa;
-                        this.idPessoa = idPessoa;
-                        this.id = ++total;
-                        this.pessoa = pessoa;
-                        this.login = login;
-                        this.senha = senha;
-                        this.tipo = tipo;
-                        this.dataCriacao = LocalDate.now();
-                        this.dataModificacao = null;
-                        criou = true;
-                    }
+                            if (login.length() > 0 && senha.length() > 0 && this.checarTipo(tipo)) {
+                                pessoa.setUserVinculado(true);
+                                this.pessoa = pessoa;
+                                this.idPessoa = idPessoa;
+                                this.id = ++total;
+                                this.login = login;
+                                this.senha = senha;
+                                this.tipo = tipo;
+                                this.dataCriacao = LocalDate.now();
+                                this.dataModificacao = null;
+                                criou = true;
+
+                            }
+                        } 
+                    } 
+
+                } else {
+                    System.out.println("Não foi possivel criar o objeto");
+                    Util.mostrarErro("Pessoa de id " + vetor[0] + " não encontrada");
                 }
+
             }
 
         }
@@ -157,7 +170,7 @@ public class Usuario implements ClasseInterface {
 
     public boolean criar(Usuario user, Object vetor[]) {
         boolean criou = false;
-        int idPessoa = (Integer) vetor[0];
+        int idPessoa = Util.stringToInt((String) vetor[0]);
         System.out.println("id convertido para inteiro com sucesso");
         //Pessoa pessoa, String login, String senha, int tipo
         if (vetor[0] != null && vetor[1] != null && vetor[2] != null && vetor[3] != null && vetor[4] != null) {
@@ -166,14 +179,17 @@ public class Usuario implements ClasseInterface {
                 System.out.println("ID DIFERENTE DE ZERO!");
                 System.out.println("Procurando pessoa de id " + vetor[0]);
                 Pessoa pessoa = (Pessoa) vetor[4];
-                if (pessoa != null && idPessoa == pessoa.getId()) {
+                if (pessoa != null
+                        && idPessoa == pessoa.getId()
+                        && !pessoa.isUserVinculado()) {
                     System.out.println("Pessoa encontrada " + pessoa.getNome());
 
                     String login = (String) vetor[1];
                     String senha = (String) vetor[2];
-                    int tipo = (Integer) vetor[3];
+                    int tipo = Util.stringToInt((String) vetor[3]);
 
                     if (login.length() > 0 && senha.length() > 0 && this.checarTipo(tipo)) {
+                        pessoa.setUserVinculado(true);
                         this.pessoa = pessoa;
                         this.idPessoa = idPessoa;
                         this.id = ++total;
@@ -196,28 +212,28 @@ public class Usuario implements ClasseInterface {
         return (tipo >= 0 && tipo <= 2);
     }
 
-public String ler() {
-    StringBuilder resultado = new StringBuilder();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public String ler() {
+        StringBuilder resultado = new StringBuilder();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    // Adiciona informações do usuário
-    resultado.append("\nUsuário ").append(this.id);
-    resultado.append("\n Nome: ").append(this.getNome());
-    resultado.append("\n Login: ").append(this.login);
-    resultado.append("\n Senha: ").append(this.senha); // Considere ocultar a senha em produção
+        // Adiciona informações do usuário
+        resultado.append("\n\nUsuário ").append(this.id);
+        resultado.append("\n Nome: ").append(this.getNome());
+        resultado.append("\n Login: ").append(this.login);
+        resultado.append("\n Senha: ").append(this.senha); // Considere ocultar a senha em produção
 
-    // Verifica e formata a data de criação
-    if (this.dataCriacao != null) {
-        resultado.append("\n Data de Criação: ").append(this.dataCriacao.format(formatter));
+        // Verifica e formata a data de criação
+        if (this.dataCriacao != null) {
+            resultado.append("\n Data de Criação: ").append(this.dataCriacao.format(formatter));
+        }
+
+        // Verifica e formata a data de modificação
+        if (this.dataModificacao != null) {
+            resultado.append("\n Data da Última Modificação: ").append(this.dataModificacao.format(formatter));
+        }
+
+        return resultado.toString();
     }
-
-    // Verifica e formata a data de modificação
-    if (this.dataModificacao != null) {
-        resultado.append("\n Data de Modificação: ").append(this.dataModificacao.format(formatter));
-    }
-
-    return resultado.toString();
-}
 
     public static String[] getCampos() {
 
@@ -235,7 +251,8 @@ public String ler() {
     }
 
     public void deletar() {
-
+        Usuario.total--;
+        this.pessoa.setUserVinculado(false);
     }
 
     public String getLogin() {

@@ -93,18 +93,27 @@ public class Presente implements ClasseInterface {
         return this.dataModificacao;
     }
 
-    public void criar(Object vetor[]) {
-        if (vetor[0] != null && vetor[1] != null) {
-            String nome = (String) vetor[0];
-            this.nome = nome;
-            String tipo = (String) vetor[1];
-            this.tipo = tipo;
+    public boolean criar(Object vetor[]) {
+        boolean alterado = false;
+        System.out.println("CRIANDO UM NOVO PRESENTE!");
+        System.out.println(vetor[0] + " " + vetor[1] + " " + vetor[2]);
+        
+        if (vetor[0] != null && vetor[0] instanceof String) {
+            this.nome = (String) vetor[0]; // Nome
+            if (vetor[1] != null && vetor[1] instanceof String) {
+                this.tipo = (String) vetor[1]; // Tipo
+                alterado = true;
+            }
+
+        }
+        if (alterado) {
+            // Atribui o ID único e define as datas de criação e modificação
             this.id = ++total;
             this.dataCriacao = LocalDate.now();
-            this.dataModificacao = null;
+            this.dataModificacao = null; // Nenhuma modificação inicial
             this.escolhido = false;
         }
-
+        return alterado;
     }
 
     public boolean criar(Usuario user, Object vetor[]) {
@@ -164,7 +173,7 @@ public class Presente implements ClasseInterface {
 
         // Verifica e formata a data de modificação
         if (this.dataModificacao != null) {
-            resultado.append("\nData de Modificação: ").append(this.dataModificacao.format(formatter));
+            resultado.append("\nData da Última Modificação: ").append(this.dataModificacao.format(formatter));
         }
 
         return resultado.toString();
